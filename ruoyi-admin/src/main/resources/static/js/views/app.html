@@ -1,0 +1,59 @@
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<body>
+<div class="gray-bg">
+    <div class="layui-fluid">
+        <div class="layui-card">
+            <div class="layui-card-header"><span class="layui-badge layui-bg-green">RuoYiPlus</span> 项目简介</div>
+            <div class="layui-card-body">
+                <blockquote class="layui-elem-quote">
+                    在<a href="http://ruoyi.vip" target="_blank"><span class="layui-badge layui-bg-gray">Ruoyi</span></a>开源项目的基础上，
+                    扩展了代码生成和子工程生成的功能，并重写了前端，统一使用
+                    <a href="https://www.layui.com" target="_blank"><span class="layui-badge layui-bg-gray">LayUI</span></a>前端框架，支持换肤和SPA/Tab。
+                </blockquote>
+                <ul style="margin-left: 20px;">
+                    <li>用户管理：用户是系统操作者，该功能主要完成系统用户配置。</li>
+                    <li>部门管理：配置系统组织机构（公司、部门、小组），树结构展现支持数据权限。</li>
+                    <li>岗位管理：配置系统用户所属担任职务。</li>
+                    <li>菜单管理：配置系统菜单，操作权限，按钮权限标识等。</li>
+                    <li>角色管理：角色菜单权限分配、设置角色按机构进行数据范围权限划分。</li>
+                    <li>字典管理：对系统中经常使用的一些较为固定的数据进行维护。</li>
+                    <li>参数管理：对系统动态配置常用参数。</li>
+                    <li>通知公告：系统通知公告信息发布维护。</li>
+                    <li>操作日志：系统正常操作日志记录和查询；系统异常信息日志记录和查询。</li>
+                    <li>登录日志：系统登录日志记录查询包含登录异常。</li>
+                    <li>在线用户：当前系统中活跃用户状态监控。</li>
+                    <li>定时任务：在线（添加、修改、删除)任务调度包含执行结果日志。</li>
+                    <li>代码生成：前后端代码的生成（java、html、xml、sql)支持CRUD，前端统一使用LayUI生成代码，支持子工程代码自动生成</li>
+                    <li>系统接口：根据业务代码自动生成相关的api接口文档。</li>
+                    <li>服务监控：监视当前系统CPU、内存、磁盘、堆栈等相关信息。</li>
+                    <li>在线构建器：拖动表单元素生成相应的HTML代码。</li>
+                    <li>连接池监视：监视当前系统数据库连接池状态，可进行分析SQL找出系统性能瓶颈。</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="layui-card">
+            <div class="layui-card-header">更新日志</div>
+            <div class="layui-card-body">
+                <ul class="layui-timeline">
+                    <li class="layui-timeline-item">
+                        <i class="layui-icon layui-timeline-axis">&#xe63f;</i>
+                        <div class="layui-timeline-content layui-text">
+                            <h3 class="layui-timeline-title">V1.0.0</h3>
+                            <p>首次发布</p>
+                            <ul>
+                                <li>重写了所有前端代码，统一使用LayUI生成前端代码</li>
+                                <li>整合MybatisPlus</li>
+                                <li>代码生成功能加强</li>
+                                <li>新增生成子工程，业务系统通过子系统来编写</li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

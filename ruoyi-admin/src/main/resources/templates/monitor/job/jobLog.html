@@ -1,0 +1,96 @@
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <!-- build:css -->
+    <link rel="stylesheet" href="/static/lib/kitadmin/css/layui.css" th:href="@{/lib/kitadmin/css/layui.css}">
+    <link rel="stylesheet" href="/static/lib/kitadmin/css/theme/default.css" th:href="@{/lib/kitadmin/css/theme/default.css}" id="theme">
+    <link rel="stylesheet" href="/static/lib/kitadmin/css/nprogress.css" th:href="@{/lib/kitadmin/css/nprogress.css}">
+</head>
+<body>
+<div class="gray-bg">
+    <div class="layui-fluid">
+        <div class="layui-row">
+            <div class="layui-col-xs12">
+                <div class="layui-card">
+                    <div class="layui-card-body">
+                        <div class="layui-row">
+                            <div class="layui-col-md12">
+                                <form class="layui-form" lay-filter="form-job-filter}">
+                                    <div class="layui-row layui-col-space10 layui-form-item">
+                                        <div class="layui-col-lg4">
+                                            <label class="layui-form-label">任务名称：</label>
+                                            <div class="layui-input-block">
+                                                <input type="text" name="jobName" placeholder="" autocomplete="off"
+                                                       class="layui-input"/>
+                                            </div>
+                                        </div>
+                                        <div class="layui-col-lg4">
+                                            <label class="layui-form-label">任务方法：</label>
+                                            <div class="layui-input-block">
+                                                <input type="text" name="methodName" placeholder="" autocomplete="off"
+                                                       class="layui-input"/>
+                                            </div>
+                                        </div>
+                                        <div class="layui-col-lg4">
+                                            <label class="layui-form-label">状态：</label>
+                                            <div class="layui-input-block">
+                                                <select name="status" th:with="type=${@dict.getType('sys_job_status')}">
+                                                    <option value="">所有</option>
+                                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-row" style="text-align: right">
+                                        <button class="layui-btn" lay-submit data-type="reload">搜索</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-card">
+                    <div class="layui-card-body">
+                        <table id="table_jobLog" lay-filter="table_jobLog">
+                        </table>
+                        <script type="text/html" id="table_jobLog_toolbar">
+                            <div class="layui-btn-container" shiro:hasPermission="system:job:add">
+                                <button class="layui-btn layui-btn-sm" lay-event="toolbar-jobLog-remove"
+                                        shiro:hasPermission="system:job:remove">批量删除
+                                </button>
+                                <button class="layui-btn layui-btn-sm" lay-event="toolbar-job-log-clear">清空
+                                </button>
+                            </div>
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../static/lib/kitadmin/polyfill.min.js" th:src="@{/lib/kitadmin/polyfill.min.js}"></script>
+<script src="../static/lib/kitadmin/layui.js" th:src="@{/lib/kitadmin/layui.js}"></script>
+<script src="../static/lib/kitadmin/kitadmin.js" th:src="@{/lib/kitadmin/kitadmin.js}"></script>
+
+<script th:inline="javascript">
+    var ctx = [[@{/}]];
+    var editFlag = [[${@permission.hasPermi('system:job:edit')}]];
+    var prefix = ctx + "monitor/jobLog";
+</script>
+<script>
+    layui.config({
+        base: ctx + 'js/admin/job/'
+    }).use(['jobLog'], function () {
+        var jobLog = layui.jobLog;
+        jobLog.init({
+            "prefix": prefix,
+            "editFlag": editFlag
+        });
+    });
+</script>
+<style scoped>
+</style>
+</body>
+</html>

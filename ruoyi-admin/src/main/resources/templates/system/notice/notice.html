@@ -1,0 +1,88 @@
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<body>
+<div class="gray-bg">
+    <div class="layui-fluid">
+        <div class="layui-row">
+            <div class="layui-col-xs12">
+                <div class="layui-card">
+                    <div class="layui-card-body">
+                        <div class="layui-row">
+                            <div class="layui-col-md12">
+                                <form class="layui-form" lay-filter="form-notice-filter}">
+                                    <div class="layui-row layui-col-space10 layui-form-item">
+                                        <div class="layui-col-lg4">
+                                            <label class="layui-form-label">公告标题：</label>
+                                            <div class="layui-input-block">
+                                                <input type="text" name="noticeTitle" placeholder="" autocomplete="off"
+                                                       class="layui-input"/>
+                                            </div>
+                                        </div>
+                                        <div class="layui-col-lg4">
+                                            <label class="layui-form-label">类型：</label>
+                                            <div class="layui-input-block">
+                                                <select name="noticeType" th:with="type=${@dict.getType('sys_notice_type')}">
+                                                    <option value="">所有</option>
+                                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-row" style="text-align: right">
+                                        <button class="layui-btn" lay-submit data-type="reload">搜索</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-card">
+                    <div class="layui-card-body">
+                        <table id="table_notice" lay-filter="table_notice">
+                        </table>
+                        <script type="text/html" id="col_operation">
+                            <a shiro:hasPermission="system:notice:edit" class="layui-btn layui-btn-xs"
+                               href="javascript:;" lay-event="edit"><i class="fa fa-edit"></i>编辑</a>
+                            <a shiro:hasPermission="system:notice:remove" class="layui-btn layui-btn-xs"
+                               href="javascript:;" lay-event="del"><i class="fa fa-remove"></i>删除</a>
+                        </script>
+                        <script type="text/html" id="table_notice_toolbar">
+                            <div class="layui-btn-container" shiro:hasPermission="system:notice:add">
+                                <button class="layui-btn layui-btn-sm" lay-event="toolbar-notice-add"
+                                        shiro:hasPermission="system:notice:add">新增
+                                </button>
+                                <button class="layui-btn layui-btn-sm" lay-event="toolbar-notice-remove"
+                                        shiro:hasPermission="system:notice:remove">批量删除
+                                </button>
+                            </div>
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('system:notice:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('system:notice:remove')}]];
+    var prefix = ctx + "system/notice";
+
+    var types = [[${@dict.getType('sys_notice_type')}]];
+    var datas = [[${@dict.getType('sys_notice_status')}]];
+
+</script>
+<script>
+    layui.config({
+        base: ctx + 'js/admin/notice/'
+    }).use(['notice'], function () {
+        var notice = layui.notice;
+        notice.init({
+            "prefix": prefix,
+            "editFlag": editFlag
+        });
+    });
+</script>
+<style scoped>
+</style>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<div class="layui-header">
+    <div class="layui-logo">
+        <div class="layui-logo-toggle" kit-toggle="side" data-toggle="on">
+            <i class="layui-icon">&#xe65a;</i>
+        </div>
+        <div class="layui-logo-brand">
+            <a href="#/">SumslackWeb</a>
+        </div>
+    </div>
+    <div class="layui-layout-left">
+        <div class="kit-search">
+          <form action="/">
+            <input type="text" name="keyword" class="kit-search-input" placeholder="快捷入口..." />
+            <button class="kit-search-btn" title="搜索" type="submit">
+              <i class="layui-icon">&#xe615;</i>
+            </button>
+          </form>
+        </div>
+    </div>
+    <div class="layui-layout-right">
+        <ul class="kit-nav" lay-filter="header_right">
+            <li class="kit-item" kit-target="help">
+                <a href="javascript:;">
+                    <i class="layui-icon">&#xe607;</i>
+                    <span>帮助</span>
+                </a>
+            </li>
+            <li class="kit-item" id="ccleft">
+                <a href="javascript:;">
+                    <i class="layui-icon">&#xe60e;</i>
+                </a>
+            </li>
+            <li class="kit-item" id="cc">
+                <a href="javascript:;">
+                    <i class="layui-icon layui-icon-screen-full"></i>
+                </a>
+            </li>
+            <li class="kit-item">
+                <a href="javascript:;">
+							<span>
+								<img src="http://m.zhengjinfan.cn/images/0.jpg" class="layui-nav-img">[[${user.userName}]]
+							</span>
+                </a>
+                <ul class="kit-nav-child kit-nav-right">
+                    <li class="kit-item">
+                        <a th:href="@{/system/user/profile}">
+                            <i class="layui-icon">&#xe612;</i>
+                            <span>个人中心</span>
+                        </a>
+                    </li>
+                    <li class="kit-item" kit-target="setting">
+                        <a href="javascript:;">
+                            <i class="layui-icon">&#xe614;</i>
+                            <span>设置</span>
+                        </a>
+                    </li>
+                    <li class="kit-nav-line"></li>
+                    <li class="kit-item">
+                        <a th:href="@{logout}">
+                            <i class="layui-icon">&#x1006;</i>
+                            <span>注销</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+</html>

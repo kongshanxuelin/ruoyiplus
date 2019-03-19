@@ -1,0 +1,151 @@
+#if($!{column.component}=="")
+    #if(${column.attrType} == "Date")
+        #if ($page == 'list')
+        <div class="layui-col-lg4">
+        #else
+        <div class="layui-form-item">
+        #end
+        <label class="layui-form-label">${column.columnComment}：</label>
+        <div class="layui-input-block">
+            <input type="text" name="${column.attrname}" lay-verify="${column.verifyStr}" placeholder="" autocomplete="off" class="layui-input ss-laydate" #if ($page == 'edit') th:field="*{${column.attrname}}" #end />
+        </div>
+    </div>
+    #elseif(${column.attrType} == "Boolean")
+        #if ($page == 'list')
+        <div class="layui-col-lg4">
+        #else
+        <div class="layui-form-item">
+        #end
+        <label class="layui-form-label">${column.columnComment}：</label>
+        <div class="layui-input-block">
+            <span th:each="dict : ${@dict.getType('${column.configInfo.value}')}">
+                    <input type="radio" th:id="${dict.dictCode}" name="${column.attrname}" th:value="${dict.dictValue}" th:title="${dict.dictLabel}"
+                        #if ($page == 'edit')
+                           th:field="*{${column.attrname}}"
+                        #else
+                           th:checked="&amp;{dict.isDefault == 'Y' ? true : false}"
+                        #end/>
+            </span>
+        </div>
+    </div>
+    #else
+        #if ($page == 'list')
+        <div class="layui-col-lg4">
+        #else
+        <div class="layui-form-item">
+        #end
+        <label class="layui-form-label">${column.columnComment}：</label>
+        <div class="layui-input-block">
+        <input #if ( ($!{column.attrType}  == 'Integer') || ($!{column.attrType}  == 'Long') ||  ($!{column.attrType}  == 'Float') || ($!{column.attrType}  == 'Double')) type="number" #else type="text" #end name="${column.attrname}" #if ($!{column.verifyStr.length()} > 0)
+            lay-verify="${column.verifyStr}" #end placeholder="" autocomplete="off" class="layui-input" #if ($page == 'edit') th:field="*{${column.attrname}}" #end />
+        </div>
+    </div>
+    #end
+#else
+    #if(${column.component}=="dict")
+        #if ($page == 'list')
+        <div class="layui-col-lg4">
+        #else
+        <div class="layui-form-item">
+        #end
+        <label class="layui-form-label">${column.columnComment}：</label>
+        <div class="layui-input-block">
+            <select name="${column.attrname}" lay-verify="${column.verifyStr}" lay-filter="${column.attrname}" th:with="type=${@dict.getType('${column.configInfo.value}')}" #if ($page == 'edit') th:field="*{${column.attrname}}" #end>
+                <option value="">所有</option>
+                <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+            </select>
+        </div>
+    </div>
+    #elseif(${column.component}=="select")
+        #if ($page == 'list')
+        <div class="layui-col-lg4">
+        #else
+        <div class="layui-form-item">
+        #end
+        <label class="layui-form-label">${column.columnComment}：</label>
+        <div class="layui-input-block">
+            <select name="${column.attrname}" lay-verify="${column.verifyStr}" lay-filter="${column.attrname}" #if ($page == 'edit') th:field="*{${column.attrname}}" #end>
+                <option value="">所有</option>
+            </select>
+        </div>
+    </div>
+    #elseif(${column.component}=="date")
+        #if ($page == 'list')
+        <div class="layui-col-lg4">
+        #else
+        <div class="layui-form-item">
+        #end
+        <label class="layui-form-label">${column.columnComment}：</label>
+        <div class="layui-input-block">
+            <input type="text" name="${column.attrname}" #if ($!{column.verifyStr.length()} > 0)lay-verify="${column.verifyStr}" #end placeholder="" autocomplete="off" class="layui-input ss-laydate" #if ($page == 'edit') th:field="*{${column.attrname}}" #end />
+        </div>
+    </div>
+    #elseif(${column.component}=="textarea")
+        #if ($page == 'list')
+        <div class="layui-col-lg4">
+        #else
+        <div class="layui-form-item">
+        #end
+        <label class="layui-form-label">${column.columnComment}：</label>
+        <div class="layui-input-block">
+            <textarea rows="3" name="${column.attrname}" class="layui-textarea" lay-verify="${column.verifyStr}" lay-filter="${column.attrname}" #if ($page == 'edit') th:field="*{${column.attrname}}" #end>
+            </textarea>
+        </div>
+    </div>
+    #elseif(${column.component}=="radio")
+        #if ($page == 'list')
+        <div class="layui-col-lg4">
+        #else
+        <div class="layui-form-item">
+        #end
+        <label class="layui-form-label">${column.columnComment}：</label>
+        <div class="layui-input-block">
+            <span th:each="dict : ${@dict.getType('${column.configInfo.value}')}">
+                <input type="radio"
+                       th:id="${dict.dictCode}" name="${column.attrname}"
+                       th:value="${dict.dictValue}" th:title="${dict.dictLabel}"
+                       #if ($page == 'edit') th:field="*{${column.attrname}}" #end />
+            </span>
+        </div>
+    </div>
+    #elseif(${column.component}=="switch")
+        #if ($page == 'list')
+        <div class="layui-col-lg4">
+        #else
+        <div class="layui-form-item">
+        #end
+        <label class="layui-form-label">${column.columnComment}：</label>
+        <div class="layui-input-block">
+            <input type="checkbox" #if ($page == 'edit') th:field="*{${column.attrname}}" #end id="${column.attrname}" name="${column.attrname}" lay-skin="switch">
+        </div>
+    </div>
+    #elseif(${column.component}=="checkbox")
+        #if ($page == 'list')
+        <div class="layui-col-lg4">
+        #else
+        <div class="layui-form-item">
+        #end
+        <label class="layui-form-label">${column.columnComment}：</label>
+        <div class="layui-input-block">
+            <span th:each="dict : ${@dict.getType('${column.configInfo.value}')}">
+                <input type="checkbox"
+                       th:id="${dict.dictCode}" name="${column.attrname}"
+                       th:value="${dict.dictValue}" th:title="${dict.dictLabel}"
+                    #if ($page == 'edit') th:field="*{${column.attrname}}" #end />
+            </span>
+        </div>
+    </div>
+    #else
+        #if ($page == 'list')
+        <div class="layui-col-lg4">
+        #else
+        <div class="layui-form-item">
+        #end
+        <label class="layui-form-label">${column.columnComment}：</label>
+        <div class="layui-input-block">
+        <input #if ( ($!{column.attrType}  == 'Integer') || ($!{column.attrType}  == 'Long') ||  ($!{column.attrType}  == 'Float') || ($!{column.attrType}  == 'Double')) type="number" #else type="text" #end name="${column.attrname}" #if ($!{column.verifyStr.length()} > 0)
+            lay-verify="${column.verifyStr}" #end placeholder="" autocomplete="off" class="layui-input" #if ($page == 'edit') th:field="*{${column.attrname}}" #end />
+        </div>
+    </div>
+    #end
+#end

@@ -1,0 +1,34 @@
+#if(!${column.configInfo})
+<div class="layui-col-lg4">
+    <label class="layui-form-label">${column.columnComment}：</label>
+    <div class="layui-input-block">
+        <input type="text" name="${column.attrname}" placeholder="" autocomplete="off" class="layui-input" th:field="*{${column.attrname}}" />
+    </div>
+</div>
+#else
+    #if(${column.configInfo.type} == "dict")
+    <div class="layui-col-lg4">
+        <label class="layui-form-label">${column.columnComment}：</label>
+        <div class="layui-input-block">
+            <select name="${column.attrname}" lay-filter="${column.attrname}" th:with="type=${@dict.getType('${column.configInfo.value}')}" th:field="*{${column.attrname}}">
+                <option value="">所有</option>
+                <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+            </select>
+        </div>
+    </div>
+    #elseif(${column.configInfo.type} == "date")
+    <div class="layui-col-lg4">
+        <label class="layui-form-label">${column.columnComment}：</label>
+        <div class="layui-input-block">
+            <input type="text" name="${column.attrname}" placeholder="" autocomplete="off" class="layui-input ss-laydate" th:field="*{${column.attrname}}" />
+        </div>
+    </div>
+    #else
+    <div class="layui-col-lg4">
+        <label class="layui-form-label">${column.columnComment}：</label>
+        <div class="layui-input-block">
+            <input type="text" name="${column.attrname}" placeholder="" autocomplete="off" class="layui-input" th:field="*{${column.attrname}}" />
+        </div>
+    </div>
+    #end
+#end

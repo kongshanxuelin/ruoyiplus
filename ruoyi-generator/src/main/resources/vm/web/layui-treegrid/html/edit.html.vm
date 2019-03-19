@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<!-- build:css -->
+	<link rel="stylesheet" href="/static/lib/kitadmin/css/layui.css" th:href="@{/lib/kitadmin/css/layui.css}">
+	<link rel="stylesheet" href="/static/lib/kitadmin/css/theme/default.css" th:href="@{/lib/kitadmin/css/theme/default.css}" id="theme">
+	<link rel="stylesheet" href="/static/lib/kitadmin/css/nprogress.css" th:href="@{/lib/kitadmin/css/nprogress.css}">
+	<!-- endbuild -->
+	<style>
+		.eleTree{
+			width: 350px;
+			height: 500px;
+			border: 1px solid #ccc;
+			overflow: hidden;
+			display: inline-block;
+			position: absolute;
+		}
+	</style>
+</head>
+<body>
+<div class="container">
+	<form class="layui-form" lay-filter="form-${module}" th:object="${${classname}}">
+		<input id="${primaryKey.attrname}" name="${primaryKey.attrname}" type="hidden" th:field="*{${primaryKey.attrname}}"/>
+		#foreach($column in $columns)
+			#if($column.columnName != $primaryKey.columnName)
+				#if(${column.editField})
+					#parse("vm/web/${tmpl}/html/fields.html.vm")
+				#end
+			#end
+		#end
+		<button class="layui-btn" id="btn-add" style="display:none"  lay-submit lay-filter="btn-add">test</button>
+	</form>
+</div>
+<script src="../static/lib/kitadmin/polyfill.min.js" th:src="@{/lib/kitadmin/polyfill.min.js}"></script>
+<script src="../static/lib/kitadmin/layui.js" th:src="@{/lib/kitadmin/layui.js}"></script>
+<script src="../static/lib/kitadmin/kitadmin.js" th:src="@{/lib/kitadmin/kitadmin.js}"></script>
+
+<script th:inline="javascript">
+	var ctx = [[@{/}]];
+		var editFlag = [[${@permission.hasPermi('system:${module}:edit')}]];
+		var prefix = ctx + "${uri}";
+</script>
+<script>
+	layui.config({
+		base: '/js/admin/${module}/'
+	}).use(['add'], function(){
+		var add = layui.add;
+		var _id = document.getElementById("${primaryKey.attrname}").value;
+		add.init({
+			"prefix":prefix,
+			"editFlag":editFlag,
+			"id":_id
+		});
+	});
+</script>
+</body>
+</html>

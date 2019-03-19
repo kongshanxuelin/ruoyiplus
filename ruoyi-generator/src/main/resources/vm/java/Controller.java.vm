@@ -1,0 +1,137 @@
+package ${basePackage}.${moduleName}.controller;
+import java.util.Arrays;
+import java.util.List;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.ruoyi.common.annotation.Log;
+import com.ruoyi.common.enums.BusinessType;
+import ${package}.domain.${className};
+import ${package}.service.I${className}Service;
+import com.ruoyi.framework.web.base.BaseController;
+import com.ruoyi.common.page.TableDataInfo;
+import com.ruoyi.common.base.AjaxResult;
+import com.ruoyi.common.utils.poi.ExcelUtil;
+import com.ruoyi.common.support.Convert;
+
+/**
+ * ${tableComment} 信息操作处理
+ * 
+ * @author ${author}
+ * @date ${datetime}
+ */
+@Controller
+@RequestMapping("/${uri}")
+public class ${className}Controller extends BaseController
+{
+    private String prefix = "${uri}";
+	
+	@Autowired
+	private I${className}Service ${classname}Service;
+	
+	@RequiresPermissions("${moduleName}:${classname}:view")
+	@GetMapping("/${classname}")
+	public String ${classname}()
+	{
+	    return prefix + "/${classname}";
+	}
+	
+	/**
+	 * 查询${tableComment}列表
+	 */
+	@RequiresPermissions("${moduleName}:${classname}:list")
+	@PostMapping("/list")
+	@ResponseBody
+	public TableDataInfo list(${className} ${classname})
+	{
+		startPage();
+		Map<String,Object> kkv = BeanUtil.beanToMap(${classname},true,true);
+		if(kkv==null || kkv.size() == 0){
+			return getDataTable(${classname}Service.list(new QueryWrapper<${className}>()));
+		}else {
+			QueryWrapper conditions = new QueryWrapper<${className}>();
+			for (String _k : kkv.keySet()) {
+				conditions.like(StrUtil.upperFirst(_k), Convert.toStr(kkv.get(_k),"%"));
+			}
+			return getDataTable(${classname}Service.list(conditions));
+		}
+	}
+	
+	
+	/**
+	 * 导出${tableComment}列表
+	 */
+	@RequiresPermissions("${moduleName}:${classname}:export")
+    @PostMapping("/export")
+    @ResponseBody
+    public AjaxResult export(${className} ${classname})
+    {
+    	List<${className}> list = ${classname}Service.list(new QueryWrapper<>());
+        ExcelUtil<${className}> util = new ExcelUtil<${className}>(${className}.class);
+        return util.exportExcel(list, "${classname}");
+    }
+	
+	/**
+	 * 新增${tableComment}
+	 */
+	@GetMapping("/add")
+	public String add()
+	{
+	    return prefix + "/${classname}_add";
+	}
+	
+	/**
+	 * 新增保存${tableComment}
+	 */
+	@RequiresPermissions("${moduleName}:${classname}:add")
+	@Log(title = "${tableComment}", businessType = BusinessType.INSERT)
+	@PostMapping("/add")
+	@ResponseBody
+	public AjaxResult addSave(${className} ${classname})
+	{		
+		return toAjax(${classname}Service.save(${classname}));
+	}
+
+	/**
+	 * 修改${tableComment}
+	 */
+	@GetMapping("/edit/{${primaryKey.attrname}}")
+	public String edit(@PathVariable("${primaryKey.attrname}") ${primaryKey.attrType} ${primaryKey.attrname}, ModelMap mmap)
+	{
+		${className} ${classname} = ${classname}Service.getById(${primaryKey.attrname});
+		mmap.put("${classname}", ${classname});
+	    return prefix + "/${classname}_edit";
+	}
+	
+	/**
+	 * 修改保存${tableComment}
+	 */
+	@RequiresPermissions("${moduleName}:${classname}:edit")
+	@Log(title = "${tableComment}", businessType = BusinessType.UPDATE)
+	@PostMapping("/edit")
+	@ResponseBody
+	public AjaxResult editSave(${className} ${classname})
+	{		
+		return toAjax(${classname}Service.updateById(${classname}));
+	}
+	
+	/**
+	 * 删除${tableComment}
+	 */
+	@RequiresPermissions("${moduleName}:${classname}:remove")
+	@Log(title = "${tableComment}", businessType = BusinessType.DELETE)
+	@PostMapping( "/remove")
+	@ResponseBody
+	public AjaxResult remove(String ids)
+	{		
+		return toAjax(${classname}Service.removeByIds(Arrays.asList(Convert.toStrArray(ids))));
+	}
+	
+}

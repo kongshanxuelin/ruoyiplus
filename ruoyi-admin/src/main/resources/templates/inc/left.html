@@ -1,0 +1,40 @@
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<div class="layui-side" kit-side="true">
+    <div class="layui-side-scroll">
+        <div id="menu-box">
+            <ul class="kit-menu">
+                <li class="kit-menu-item" th:each="menu : ${menus}">
+                    <a th:class="${#lists.isEmpty(menu.children)?'':'child'}" th:href="@{${#lists.isEmpty(menu.children)?('#'+menu.url):'javascript:;'}}">
+                        <i class="layui-icon" th:class="${menu.icon}"></i>
+                        <span th:text="${menu.menuName}">菜单</span>
+                    </a>
+                    <ul class="kit-menu-child kit-menu-child layui-anim layui-anim-upbit" th:if="${not #lists.isEmpty(menu.children)}">
+                        <li class="kit-menu-item" th:each="cmenu : ${menu.children}">
+                            <a  th:class="${#lists.isEmpty(cmenu.children)?'':'child'}" th:href="@{${#lists.isEmpty(cmenu.children)?('#'+cmenu.url):'javascript:;'}}">
+                                <i class="layui-icon" th:if="${cmenu.icon!='#' && cmenu.icon!=''}"></i>
+                                <span th:text="${cmenu.menuName}">菜单1.1</span>
+                            </a>
+                            <ul class="kit-menu-child kit-menu-child layui-anim layui-anim-upbit" th:if="${not #lists.isEmpty(cmenu.children)}">
+                                <li class="kit-menu-item" th:each="dmenu : ${cmenu.children}">
+                                    <a th:class="${#lists.isEmpty(dmenu.children)?'':'child'}" th:href="@{${#lists.isEmpty(dmenu.children)?('#'+dmenu.url):'javascript:;'}}">
+                                        <i class="layui-icon" th:if="${dmenu.icon!='#' && dmenu.icon!=''}"></i>
+                                        <span th:text="${dmenu.menuName}">菜单1.1.1</span>
+                                    </a>
+                                    <ul class="kit-menu-child kit-menu-child layui-anim layui-anim-upbit" th:if="${not #lists.isEmpty(dmenu.children)}">
+                                        <li class="kit-menu-item" th:each="emenu : ${dmenu.children}">
+                                            <a th:class="${#lists.isEmpty(emenu.children)?'':'child'}" th:href="@{${#lists.isEmpty(emenu.children)?('#'+emenu.url):'javascript:;'}}">
+                                                <i class="layui-icon" th:if="${emenu.icon!='#' && emenu.icon!=''}"></i>
+                                                <span th:text="${emenu.menuName}">菜单1.1.1.1</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+</html>

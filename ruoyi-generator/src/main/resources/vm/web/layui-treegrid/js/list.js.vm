@@ -1,0 +1,186 @@
+layui.define(['jquery','treeTable','layer','form','laydate','common'], function(exports) {
+    var $ = layui.jquery,
+        layer = layui.layer,
+        form = layui.form,
+        common = layui.common,
+        laydate = layui.laydate,
+        table = layui.treeTable;
+    var table_${module} = null;
+    var tableId = 'table_${module}';
+    //页面事件列表
+    var active = {
+        reload: function(){
+            table.reload(tableId,{
+                //url: prefix + "/list",
+                page:{
+                    curr:1
+                }
+            });
+        },
+        remove: function(ids){
+            common.ajaxRemove(prefix + "/remove",ids,function(res){
+                active['reload'].call(this);
+            });
+        }
+    };
+    var _config = null;
+    var view = {
+        init:function(config){
+            _config = config;
+            laydate.render({
+                elem: '.ss-laydate'
+            });
+            this.initTable();
+            this.initForm();
+        },
+        initTable:function(){
+            table_${module} = table.render({
+                id:${module},
+                elem: '#table_'+${module},
+                url: prefix + "/list", //数据接口
+                end: function () {
+                    form.render();
+                },
+
+                icon_key: '${primaryKey.attrname}',// 必须
+                top_value: 0,
+                idField: '${primaryKey.attrname}',
+                treeId:'${primaryKey.attrname}',
+                treeUpId: '${key_parentId}'
+                ,treeShowName:'${primaryKey.attrname}'//以树形式显示的字段
+                ,heightRemove:[".dHead",10]//不计算的高度,表格设定的是固定高度，此项不生效
+                ,height:"100%"
+                ,isFilter:false
+                ,iconOpen:true
+                ,isOpenDefault:true
+                ,loading:true
+                ,method:'GET'
+                ,isPage:false,
+                cols: [[
+                    #foreach($column in $columns)
+                        #if($column.visible)
+                            {
+                                field: '${column.attrname}',
+                                width:${column.width},
+                                align:'center',
+                                title: '${column.columnComment}'
+                            },
+                        #end
+                    #end
+                    {
+                        title: '操作',
+                        align: 'center',
+                        width:'200px'
+                        templet: function(item){
+                            return '<a class="layui-btn layui-btn-xs"' +
+                                '   lay-event="addChild"><i class="fa fa-add"></i>添加' +
+                                '</a>' +
+                                '<a class="layui-btn layui-btn-xs"' +
+                                '   lay-event="edit"><i class="fa fa-edit"></i>编辑' +
+                                '</a>' +
+                                '<a  class="layui-btn layui-btn-xs"' +
+                                '   lay-event="del"><i class="fa fa-remove"></i>删除' +
+                                '</a>';
+                        }
+                    }]]
+            });
+
+            $("[lay-filter=toolbar-${module}-add]").click(function(){
+                layer.open({
+                    type: 2,
+                    title: '新增',
+                    shade: false,
+                    fixed: false,
+                    maxmin: true,
+                    area: ['600px', '450px'],
+                    content: prefix + '/add/0',
+                    btn: ["创建", "取消"],
+                    yes: function (index, layero) {
+                        layui.config({
+                            base: ctx + 'js/admin/${module}/'
+                        }).use('add', function () {
+                            layui.add.submit({
+                                "index": index,
+                                "layero": layero
+                            });
+                        });
+                    }
+                });
+            });
+            $("[lay-filter=toolbar-${module}-zhedie]").click(function(){
+                table.treeOpenAll(tableId,false);
+            });
+            $("[lay-filter=toolbar-${module}-zhankai]").click(function(){
+                table.treeOpenAll(tableId,true);
+            });
+
+
+            //表格事件
+            table.on('tool('+tableId+')', function (obj) {
+               switch (obj.event) {
+                   'addChild':
+                       layer.open({
+                           type: 2,
+                           title: '新增',
+                           shade: false,
+                           fixed: false,
+                           maxmin: true,
+                           area: ['600px', '450px'],
+                           content: prefix + '/add/'+obj.data.${primaryKey.attrname},
+                           btn: ["创建", "取消"],
+                           yes: function (index, layero) {
+                               layui.config({
+                                   base: ctx + 'js/admin/${module}/'
+                               }).use('add', function () {
+                                   layui.add.submit({
+                                       "index": index,
+                                       "layero": layero
+                                   });
+                               });
+                           }
+                       });
+                       break;
+                    'edit':
+                       layer.open({
+                           type: 2,
+                           title: '编辑',
+                           shade: false,
+                           fixed: false,
+                           maxmin: true,
+                           area: ['800px', '600px'],
+                           content: prefix + '/edit/' + obj.data.${primaryKey.attrname},
+                           btn: ["保存", "取消"],
+                           yes: function (index, layero) {
+                               layui.config({
+                                   base: ctx + 'js/admin/${module}/'
+                               }).use('add', function () {
+                                   layui.add.submit({
+                                       "index": index,
+                                       "layero": layero
+                                   });
+                               });
+                           }
+                       });
+                       break;
+                    'del':
+                       active['remove'].call(this, obj.item.${primaryKey.attrname});
+                       break;
+               }
+            });
+        },
+        initForm:function(){
+            $('form .layui-btn').on('click', function(){
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+                return false;
+            });
+        },
+        removeItems:function(){
+            active['remove'].call(this);
+        },
+        refreshTable:function(){
+            active['reload'].call(this);
+        }
+    };
+    exports('ss_${module}',view);
+});

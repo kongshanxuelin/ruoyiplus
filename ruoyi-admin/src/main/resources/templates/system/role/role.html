@@ -1,0 +1,117 @@
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org"
+	   xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<body>
+<div class="gray-bg">
+    <div class="layui-body-header">
+        <ul class="kit-breadcrumb">
+            <li class="kit-item">
+                <a href="javascript:;">
+                    <i class="layui-icon">&#xe68e;</i>
+                    <span kit-id="abc">系统管理</span>
+                </a>
+            </li>
+            <li class="kit-separator">
+                <i class="layui-icon">&#xe602;</i>
+            </li>
+            <li class="kit-item">
+                <a>
+                    <span>角色管理</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space10">
+            <div class="layui-col-sm12 layui-col-md12 layui-col-lg12" id="searchDiv">
+                <div class="layui-card smooth">
+                    <div class="layui-card-body">
+                        <form class="layui-form" lay-filter="form-role-filter">
+                            <div class="layui-form toolbar">
+                            <div class="layui-form-item">
+                                <div class="layui-inline">
+                                    <label class="layui-form-label">角色名称：</label>
+                                    <div class="layui-input-inline">
+                                        <input name="roleName" type="text" class="layui-input" autocomplete="off"/>
+                                    </div>
+                                </div>
+                                    <div class="layui-inline">
+                                    <label class="layui-form-label">权限字符：</label>
+                                    <div class="layui-input-inline">
+                                        <input name="roleKey" type="text" class="layui-input" autocomplete="off"/>
+                                    </div>
+                                </div>
+                                <div class="layui-inline">
+                                    <label class="layui-form-label">状态：</label>
+                                    <div class="layui-input-inline">
+                                        <select name="status" lay-filter="sex" th:with="type=${@dict.getType('sys_normal_disable')}">
+                                            <option value="">所有</option>
+                                            <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="layui-inline">
+                                    <button id="btnSearch" lay-submit class="layui-btn" data-type="reload"><i class="layui-icon">&#xe615;</i>搜索
+                                    </button>
+                                    <button  type="reset" class="layui-btn"><i class="layui-icon">&#xe669;</i>重置
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-sm12 layui-col-md12 layui-col-lg12">
+            <div class="layui-card">
+                    <div class="layui-card-body">
+                        <table id="table_role" lay-filter="tableRole">
+                        </table>
+                        <script type="text/html" id="col_operation">
+                            <a shiro:hasPermission="system:role:edit" class="layui-btn layui-btn-xs" href="javascript:;" lay-event="edit"><i class="fa fa-edit"></i>编辑</a>
+                            <a shiro:hasPermission="system:role:remove" class="layui-btn layui-btn-xs" href="javascript:;" lay-event="del"><i class="fa fa-remove"></i>删除</a>
+
+                            <a shiro:hasPermission="system:role:edit" class="layui-btn layui-btn-xs" href="javascript:;" lay-event="data"><i class="fa fa-user"></i>数据权限</a>
+
+                        </script>
+                        <script type="text/html" id="tmplRoleStatus">
+                            {{#  if(d.status == 1){ }}
+                            <input type="checkbox" lay-filter="filter-switchRoleStatus" value="{{d.roleId}}" name="switchRoleStatus" lay-skin="switch" checked>
+                            {{#  } else { }}
+                            <input type="checkbox" lay-filter="filter-switchRoleStatus" value="{{d.roleId}}" name="switchRoleStatus" lay-skin="switch">
+                            {{#  } }}
+                        </script>
+                        <script type="text/html" id="table_role_toolbar">
+                            <div class="layui-btn-group" shiro:hasPermission="system:user:add">
+                                <button  class="layui-btn layui-btn-sm" lay-event="toolbar-role-add" shiro:hasPermission="system:role:add"><i class="layui-icon">&#xe654;</i>新增</button>
+                                <button  class="layui-btn layui-btn-sm" lay-event="toolbar-role-remove" shiro:hasPermission="system:role:add"><i class="layui-icon">&#xe640;</i>删除</button>
+                                <button id="btnExp" class="layui-btn layui-btn-sm"><i class="layui-icon">&#xe67d;</i>导出</button>
+                            </div>
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('system:role:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('system:role:remove')}]];
+    var prefix = ctx + "system/role";
+</script>
+<script>
+    layui.config({
+        base: ctx + 'js/admin/role/'
+    }).use(['role'], function(){
+        var role = layui.role;
+        role.init({
+            "prefix":prefix,
+            "editFlag":editFlag
+        });
+    });
+</script>
+<!-- 样式 -->
+<style scoped>
+
+</style>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <!-- build:css -->
+    <link rel="stylesheet" href="/static/lib/kitadmin/css/layui.css" th:href="@{/lib/kitadmin/css/layui.css}">
+    <link rel="stylesheet" href="/static/lib/kitadmin/css/theme/default.css"
+          th:href="@{/lib/kitadmin/css/theme/default.css}" id="theme">
+    <link rel="stylesheet" href="/static/lib/kitadmin/css/nprogress.css" th:href="@{/lib/kitadmin/css/nprogress.css}">
+    <!-- endbuild -->
+    <style>
+        .eleTree {
+            width: 350px;
+            height: 500px;
+            border: 1px solid #ccc;
+            overflow: hidden;
+            display: inline-block;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <form class="layui-form" lay-filter="form-notice">
+        <div class="layui-form-item">
+            <label class="layui-form-label">公告标题：</label>
+            <div class="layui-input-block">
+                <input type="text" name="noticeTitle" placeholder="" autocomplete="off" class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">公告类型：</label>
+            <div class="layui-input-block">
+                <select name="noticeType" th:with="type=${@dict.getType('sys_notice_type')}">
+                    <option value="">所有</option>
+                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">公告内容：</label>
+            <div class="layui-input-block">
+                <textarea type="text" name="noticeContent"  rows="5" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">公告状态：</label>
+            <div class="layui-input-block">
+                <span th:each="dict : ${@dict.getType('sys_normal_disable')}">
+                    <input type="radio" th:id="${dict.dictCode}" name="status" th:value="${dict.dictValue}" th:title="${dict.dictLabel}" th:checked="${dict.isDefault == 'Y' ? true : false}" />
+                </span>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">备注：</label>
+            <div class="layui-input-block">
+                <textarea type="text" name="remark"  class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <button class="layui-btn" id="btn-add" style="display:none" lay-submit lay-filter="btn-add">创建</button>
+    </form>
+</div>
+<script src="../static/lib/kitadmin/polyfill.min.js" th:src="@{/lib/kitadmin/polyfill.min.js}"></script>
+<script src="../static/lib/kitadmin/layui.js" th:src="@{/lib/kitadmin/layui.js}"></script>
+<script src="../static/lib/kitadmin/kitadmin.js" th:src="@{/lib/kitadmin/kitadmin.js}"></script>
+
+<script th:inline="javascript">
+    var ctx = [[@{
+        /}]];
+        var editFlag = [[${@permission.hasPermi('system:notice:edit')}]];
+        var prefix = ctx + "system/notice";
+</script>
+<script>
+    layui.config({
+        base: '/js/admin/notice/'
+    }).use(['add'], function () {
+        var add = layui.add;
+        add.init({
+            "prefix": prefix,
+            "editFlag": editFlag
+        });
+    });
+</script>
+</body>
+</html>

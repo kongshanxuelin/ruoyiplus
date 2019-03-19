@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <!-- build:css -->
+    <link rel="stylesheet" href="/static/lib/kitadmin/css/layui.css" th:href="@{/lib/kitadmin/css/layui.css}">
+    <link rel="stylesheet" href="/static/lib/kitadmin/css/theme/default.css"
+          th:href="@{/lib/kitadmin/css/theme/default.css}" id="theme">
+    <link rel="stylesheet" href="/static/lib/kitadmin/css/nprogress.css" th:href="@{/lib/kitadmin/css/nprogress.css}">
+    <!-- endbuild -->
+    <style>
+        .eleTree {
+            width: 350px;
+            height: 500px;
+            border: 1px solid #ccc;
+            overflow: hidden;
+            display: inline-block;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <form class="layui-form" lay-filter="form-dict_data">
+        <input type="hidden" name="dictType" th:value="${dictType}"/>
+        <div class="layui-form-item">
+            <label class="layui-form-label">字典排序：</label>
+            <div class="layui-input-block">
+                <input type="text" name="dictSort" placeholder="" autocomplete="off" class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">字典标签：</label>
+            <div class="layui-input-block">
+                <input type="text" name="dictLabel" placeholder="" autocomplete="off" class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">字典键值：</label>
+            <div class="layui-input-block">
+                <input type="text" name="dictValue" placeholder="" autocomplete="off" class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">样式属性：</label>
+            <div class="layui-input-block">
+                <input type="text" name="cssClass" placeholder="" autocomplete="off" class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">回显样式：</label>
+            <div class="layui-input-block">
+                <select name="listClass" class="form-control m-b">
+                    <option value="">---请选择---</option>
+                    <option value="default">默认</option>
+                    <option value="primary">主要</option>
+                    <option value="success">成功</option>
+                    <option value="info">   信息</option>
+                    <option value="warning">警告</option>
+                    <option value="danger"> 危险</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">是否默认：</label>
+            <div class="layui-input-block">
+                <span th:each="dict : ${@dict.getType('sys_yes_no')}">
+                    <input type="radio" th:id="${dict.dictCode}" name="isDefault" th:value="${dict.dictValue}" th:title="${dict.dictLabel}" th:checked="${dict.isDefault == 'Y' ? true : false}" />
+                </span>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">状态：</label>
+            <div class="layui-input-block">
+                <span th:each="dict : ${@dict.getType('sys_normal_disable')}">
+                    <input type="radio" th:id="${dict.dictCode}" name="status" th:value="${dict.dictValue}" th:title="${dict.dictLabel}" th:checked="${dict.isDefault == 'Y' ? true : false}" />
+                </span>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">备注：</label>
+            <div class="layui-input-block">
+                <textarea type="text" name="remark" placeholder="" autocomplete="off" class="layui-textarea" rows="5"></textarea>
+            </div>
+        </div>
+        <button class="layui-btn" id="btn-add" style="display:none" lay-submit lay-filter="btn-add">创建</button>
+    </form>
+</div>
+<script src="../static/lib/kitadmin/polyfill.min.js" th:src="@{/lib/kitadmin/polyfill.min.js}"></script>
+<script src="../static/lib/kitadmin/layui.js" th:src="@{/lib/kitadmin/layui.js}"></script>
+<script src="../static/lib/kitadmin/kitadmin.js" th:src="@{/lib/kitadmin/kitadmin.js}"></script>
+
+<script th:inline="javascript">
+    var ctx = [[@{
+        /}]];
+        var editFlag = [[${@permission.hasPermi('system:dict_data:edit')}]];
+        var prefix = ctx + "system/dict/data";
+</script>
+<script>
+    layui.config({
+        base: '/js/admin/dict_data/'
+    }).use(['add'], function () {
+        var add = layui.add;
+        add.init({
+            "prefix": prefix,
+            "editFlag": editFlag
+        });
+    });
+</script>
+</body>
+</html>

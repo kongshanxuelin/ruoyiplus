@@ -1,0 +1,63 @@
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org"
+	   xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<body>
+<div class="gray-bg">
+    <div class="layui-fluid">
+        <div class="layui-row">
+            <div class="layui-col-xs12">
+                <div class="layui-card">
+                    <div class="layui-card-body">
+                        <div class="layui-row">
+                            <div class="layui-col-md12">
+                                <form class="layui-form" lay-filter="form-${module}-filter">
+                                    <div class="layui-row layui-col-space10 layui-form-item">
+                                        #foreach($column in $columns)
+                                            #if($column.searchField)
+                                                #parse("vm/web/${tmpl}/html/fields_null.html.vm")
+                                            #end
+                                        #end
+                                    </div>
+                                    <div class="layui-row" style="text-align: right">
+                                        <button class="layui-btn" lay-submit data-type="reload">搜索</button>
+                                        <button class="layui-btn layui-btn-warm" type="reset">重置</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-card">
+                    <div class="layui-card-body">
+                        <div class="layui-btn-container" shiro:hasPermission="system:${module}:add">
+                            <button class="layui-btn layui-btn-sm" lay-filter="toolbar-${module}-add"shiro:hasPermission="system:${module}:add">新增</button>
+                            <button class="layui-btn layui-btn-sm" lay-filter="toolbar-${module}-zhedie">全部折叠</button>
+                            <button class="layui-btn layui-btn-sm" lay-filter="toolbar-${module}-zhankai">全部展开</button>
+                        </div>
+                        <table class="layui-table layui-form" id="table_${module}" lay-filter="table_${module}">
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('system:${module}:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('system:${module}:remove')}]];
+    var prefix = ctx + "${uri}";
+</script>
+<script>
+    layui.config({
+        base: ctx + 'js/admin/${module}/'
+    }).use(['${module}'], function(){
+        var ${module} = layui.ss_${module};
+        ${module}.init({
+            "prefix":prefix,
+            "editFlag":editFlag
+        });
+    });
+</script>
+<style scoped>
+</style>
+</body>
+</html>

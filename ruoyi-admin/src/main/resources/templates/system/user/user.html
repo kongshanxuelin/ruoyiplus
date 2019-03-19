@@ -1,0 +1,287 @@
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org"
+       xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<div class="layui-body-header">
+    <ul class="kit-breadcrumb">
+        <li class="kit-item">
+            <a href="javascript:;">
+                <i class="layui-icon">&#xe68e;</i>
+                <span>系统管理</span>
+            </a>
+        </li>
+        <li class="kit-separator">
+            <i class="layui-icon">&#xe602;</i>
+        </li>
+        <li class="kit-item">
+            <a>
+                <span>用户管理</span>
+            </a>
+        </li>
+    </ul>
+</div>
+<div class="layui-fluid">
+    <div class="layui-row">
+        <div class="layui-col-xs12">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <div class="layui-row">
+                        <div class="layui-col-md2">
+                            <div class="eleTree ele1" lay-filter="treeDept"></div>
+                        </div>
+                        <div class="layui-col-md10">
+                            <form class="layui-form">
+                                <div class="btn-reload" style="margin-bottom: 10px;">
+                                    <div class="layui-inline">
+                                        <input class="layui-input" id="filter_loginName" autocomplete="off" placeholder="登录名">
+                                    </div>
+                                    <div class="layui-inline">
+                                        <input class="layui-input" id="filter_phonenumber" autocomplete="off" placeholder="手机号">
+                                    </div>
+                                    <button class="layui-btn" data-type="reload">搜索</button>
+                                </div>
+                            </form>
+
+                            <table id="table_user" lay-filter="tableUser">
+                            </table>
+
+                            <script type="text/html" id="col_operation">
+                                <a shiro:hasPermission="system:user:edit" class="layui-btn layui-btn-xs" href="javascript:;" lay-event="edit"><i class="fa fa-edit"></i>编辑</a>
+                                <a shiro:hasPermission="system:user:remove" class="layui-btn layui-btn-xs" href="javascript:;" lay-event="del"><i class="fa fa-remove"></i>删除</a>
+                                <a class="layui-btn layui-btn-xs" href="javascript:;" lay-event="reset"><i class="fa fa-key"></i>重置</a>
+                            </script>
+                            <script type="text/html" id="tmplUserStatus">
+                                {{#  if(d.status == 1){ }}
+                                <input type="checkbox" lay-filter="filter-switchUserStatus" value="{{d.userId}}" name="switchUserStatus" lay-skin="switch" checked>
+                                {{#  } else { }}
+                                <input type="checkbox" lay-filter="filter-switchUserStatus" value="{{d.userId}}" name="switchUserStatus" lay-skin="switch">
+                                {{#  } }}
+                            </script>
+                            <script type="text/html" id="table_user_toolbar">
+                                <div class="layui-btn-container" shiro:hasPermission="system:user:add">
+                                    <button  class="layui-btn layui-btn-sm" lay-event="createUser">新增用户</button>
+                                </div>
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('system:user:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('system:user:remove')}]];
+    var resetPwdFlag = [[${@permission.hasPermi('system:user:resetPwd')}]];
+    var datas = [[${@dict.getType('sys_normal_disable')}]];
+    var prefix = ctx + "system/user";
+</script>
+<script>
+    layui.use(['jquery','table','layer','eleTree','form','common'], function() {
+        var $ = layui.jquery,
+            layer = layui.layer,
+            eleTree = layui.eleTree,
+            form = layui.form,
+            common = layui.common,
+            table = layui.table;
+
+        var tree_cur_deptId,tree_cur_pid;
+        //页面事件
+        var active = {
+            reload: function(){
+                var loginName = $('#filter_loginName');
+                var phonenumber = $("#filter_phonenumber");
+                var deptId = tree_cur_deptId;
+                var parentId = tree_cur_pid;
+
+                //执行重载
+                table.reload('table_user', {
+                    page: {
+                        curr: 1
+                    }
+                    ,where: {
+                        "loginName": loginName.val(),
+                        "phonenumber": phonenumber.val(),
+                        "deptId": deptId,
+                        "parentId": parentId
+                    }
+                });
+            }
+        };
+
+        //初始化树
+        var deptTree=eleTree.render({
+                elem: '.ele1',
+                url: ctx + "system/dept/treeData2",
+                request:{
+                    name: "name",
+                    key: "id",
+                    children: "children",
+                    checked: "checked",
+                    disabled: "disabled",
+                    isLeaf: "isLeaf"
+                },
+                response: {
+                    statusName: "code",
+                    statusCode: 0,
+                    dataName: "data"
+                },
+            defaultExpandAll: true,
+            checkOnClickNode:true,
+            //defaultExpandedKeys:[100],
+            renderAfterExpand: true
+            }
+        );
+
+        eleTree.on("nodeClick(treeDept)",function(d) {
+            //if(d.data.currentData.isLeaf){
+                tree_cur_deptId = d.data.currentData.id;
+                tree_cur_pid = d.data.currentData.pId;
+                active['reload'].call(this);
+            //}
+        });
+
+        //监听表格复选框选择
+        table.on('radio(tableUser)', function (obj) {
+            console.log(obj,this.value)
+        });
+        form.on('switch(filter-switchUserStatus)',function(obj){
+            common.ajax.post(prefix +'/changeStatus',{
+                userId:this.value,
+                status:obj.elem.checked?1:0
+            },function(res){
+                console.log(res);
+            });
+        });
+        table.render({
+            method: 'GET',
+            url: prefix + "/list", //数据接口
+            toolbar: '#table_user_toolbar',
+            done: function() {
+                $('#table_user').next().css('height', 'auto');
+            },
+            limit: 20,
+            elem: '#table_user',
+            height: 680,
+            page: true,
+            cols: new Array([{
+                    field: 'loginName',
+                    title: '登录名称',
+                    sort: true,
+                    align:'center',
+                    width:100,
+                    fixed: 'left'
+                },
+                {
+                    field: 'userName',
+                    sort: true,
+                    width:100,
+                    align:'center',
+                    title: '用户名称'
+                },
+                {
+                    field: 'dept.deptName',
+                    sort: true,
+                    align:'center',
+                    title: '部门'
+                },
+                {
+                    field: 'email',
+                    title: '邮箱',
+                    sort: true,
+                    align:'center',
+                    visible: false
+                },
+                {
+                    field: 'phonenumber',
+                    sort: true,
+                    align:'center',
+                    title: '手机'
+                },
+                {
+                    visible: editFlag == 'hidden' ? false : true,
+                    title: '冻结账户',
+                    sort: true,
+                    width:100,
+                    align: 'center',
+                    templet: '#tmplUserStatus'
+                },
+                {
+                    field: 'createTime',
+                    title: '创建时间',
+                    sort: true
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    toolbar:'#col_operation'
+                }])
+        });
+        //监听工具栏
+        table.on('toolbar(tableUser)', function(obj){
+            switch(obj.event){
+                case 'createUser':
+                    layer.open({
+                        type: 2,
+                        title: '编辑',
+                        shade: false,
+                        fixed: false,
+                        maxmin: true,
+                        area: ['800px', '600px'],
+                        content: ctx + 'system/user/add'
+                    });
+                    break;
+            }
+        });
+
+        //监听事件
+        table.on('tool(tableUser)', function(obj){
+            switch(obj.event){
+                case 'del':
+                    common.ajaxRemove(ctx + "system/user/remove",obj.data.userId,function(res){
+                        active['reload'].call(this);
+                    });
+                    break;
+                case 'reset':
+                    var url = ctx + 'system/user/resetPwd';
+                    layer.confirm('确定重置该用户密码为123456么？', function(index) {
+                        common.ajax.post(url, {
+                            userId: obj.data.userId,
+                            loginName: obj.data.loginName,
+                            password: "123456"
+                        }, function (res) {
+                            if(res.code  == 0){
+                                layer.alert("重置密码操作成功！");
+                            }else{
+                                layer.alert("重置密码操作失败！");
+                            }
+                            layer.close(index);
+                        });
+                    });
+                    break;
+                case 'edit':
+                    layer.open({
+                        type: 2,
+                        title: '编辑',
+                        shade: false,
+                        fixed: false,
+                        maxmin: true,
+                        area: ['800px', '600px'],
+                        content: ctx + 'system/user/edit/'+obj.data.userId
+                    });
+                    break;
+            }
+        });
+
+
+        $('.btn-reload .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+            return false;
+        });
+
+    });
+</script>
+<!-- 样式 -->
+<style scoped>
+
+</style>
+</html>

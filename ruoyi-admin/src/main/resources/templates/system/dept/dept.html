@@ -1,0 +1,76 @@
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<body>
+<div class="gray-bg">
+    <div class="layui-fluid">
+        <div class="layui-row">
+            <div class="layui-col-xs12">
+                <div class="layui-card">
+                    <div class="layui-card-body">
+                        <div class="layui-row">
+                            <div class="layui-col-md12">
+                                <form class="layui-form" lay-filter="form-dept-filter">
+                                    <div class="layui-row layui-col-space10 layui-form-item">
+                                        <div class="layui-col-lg4">
+                                            <label class="layui-form-label">部门名称：</label>
+                                            <div class="layui-input-block">
+                                                <input type="text" name="deptName" placeholder="" autocomplete="off"
+                                                       class="layui-input"/>
+                                            </div>
+                                        </div>
+                                        <div class="layui-col-lg4">
+                                            <label class="layui-form-label">负责人：</label>
+                                            <div class="layui-input-block">
+                                                <input type="text" name="leader" placeholder="" autocomplete="off"
+                                                       class="layui-input"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="layui-row" style="text-align: right">
+                                        <button class="layui-btn" lay-submit data-type="reload"><i class="layui-icon">&#xe615;</i>搜索</button>
+                                        <button class="layui-btn layui-btn-warm" type="reset"><i class="layui-icon">&#xe669;</i>重置</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-card">
+                    <div class="layui-card-body">
+                        <div class="layui-btn-container" shiro:hasPermission="system:dept:add">
+                            <button class="layui-btn layui-btn-sm" lay-filter="toolbar-dept-add"
+                                    shiro:hasPermission="system:dept:add">新增部门
+                            </button>
+                            <button class="layui-btn layui-btn-sm" lay-filter="toolbar-dept-zhedie">全部折叠
+                            </button>
+                            <button class="layui-btn layui-btn-sm" lay-filter="toolbar-dept-zhankai">全部展开
+                            </button>
+                        </div>
+                        <table class="layui-table layui-form" id="table_dept" lay-filter="table_dept">
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('system:dept:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('system:dept:remove')}]];
+    var prefix = ctx + "system/dept";
+</script>
+<script>
+    layui.config({
+        base: ctx + 'js/admin/dept/'
+    }).use(['dept'], function () {
+        var dept = layui.dept;
+        dept.init({
+            "prefix": prefix,
+            "editFlag": editFlag
+        });
+    });
+</script>
+<style scoped>
+</style>
+</body>
+</html>

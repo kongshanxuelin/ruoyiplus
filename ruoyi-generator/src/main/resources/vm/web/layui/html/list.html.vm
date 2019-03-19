@@ -1,0 +1,68 @@
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org"
+	   xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<body>
+<div class="gray-bg">
+    <div class="layui-fluid">
+        <div class="layui-row">
+            <div class="layui-col-xs12">
+                <div class="layui-card">
+                    <div class="layui-card-body">
+                        <div class="layui-row">
+                            <div class="layui-col-md12">
+                                <form class="layui-form" lay-filter="form-${module}-filter}">
+                                    <div class="layui-row layui-col-space10 layui-form-item">
+                                        #set( $page = 'list' )
+                                        #foreach($column in $columns)
+                                            #if($column.searchField)
+                                                #parse("vm/web/${tmpl}/html/fields.html.vm")
+                                            #end
+                                        #end
+                                    </div>
+                                    <div class="layui-row" style="text-align: right">
+                                        <button class="layui-btn" lay-submit data-type="reload">搜索</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-card">
+                    <div class="layui-card-body">
+                        <table id="table_${module}" lay-filter="table_${module}">
+                        </table>
+                        <script type="text/html" id="col_operation">
+                            <a shiro:hasPermission="system:${module}:edit" class="layui-btn layui-btn-xs" href="javascript:;" lay-event="edit"><i class="fa fa-edit"></i>编辑</a>
+                            <a shiro:hasPermission="system:${module}:remove" class="layui-btn layui-btn-xs" href="javascript:;" lay-event="del"><i class="fa fa-remove"></i>删除</a>
+                        </script>
+                        <script type="text/html" id="table_${module}_toolbar">
+                            <div class="layui-btn-container" shiro:hasPermission="system:${module}:add">
+                                <button  class="layui-btn layui-btn-sm" lay-event="toolbar-${module}-add" shiro:hasPermission="system:${module}:add">新增</button>
+                                <button  class="layui-btn layui-btn-sm" lay-event="toolbar-${module}-remove" shiro:hasPermission="system:${module}:remove">批量删除</button>
+                            </div>
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('${module}:${classname}:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('${module}:${classname}:remove')}]];
+    var prefix = ctx + "${uri}";
+</script>
+<script>
+    layui.config({
+        base: ctx + 'js/admin/${module}/'
+    }).use(['${classname}'], function(){
+        var ${classname} = layui.${classname};
+        ${classname}.init({
+            "prefix":prefix,
+            "editFlag":editFlag
+        });
+    });
+</script>
+<style scoped>
+</style>
+</body>
+</html>
