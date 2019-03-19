@@ -1,3 +1,4 @@
+加入QQ群讨论：[![QQ](http://pub.idqqimg.com/wpa/images/group.png)](https://jq.qq.com/?_wv=1027&k=5HWgxBZ)
 ## RuoYiPlus简介
 
 在RuoYi项目基础上改造，通过多模块的方式整合其他J2EE项目中经常被用到的功能模块；
@@ -28,3 +29,28 @@ RuoYi 是一个 Java EE 企业级快速开发平台，基于经典技术组合�
     - 模板管理；
 1. 整合数据推送（可选）；
 1. UI根据layui的kit_admin完全重写；
+
+演示地址：http://ryplus.sumslack.com
+
+## 演示图
+
+<table>
+    <tr>
+        <td><img src="http://h5.sumslack.com/ruoyiplus/11.jpg"/></td>
+        <td><img src="http://h5.sumslack.com/ruoyiplus/22.jpg"/></td>
+    </tr>
+    <tr>
+        <td><img src="http://h5.sumslack.com/ruoyiplus/33.jpg"/></td>
+        <td><img src="http://h5.sumslack.com/ruoyiplus/44.jpg"/></td>
+    </tr>
+    <tr>
+        <td><img src="http://h5.sumslack.com/ruoyiplus/55.jpg"/></td>
+        <td><img src="http://h5.sumslack.com/ruoyiplus/66.jpg"/></td>
+    </tr>
+    <tr>
+        <td><img src="http://h5.sumslack.com/ruoyiplus/77.jpg"/></td>
+        <td><img src="http://h5.sumslack.com/ruoyiplus/88.jpg"/></td>
+    </tr>
+</table>
+
+
