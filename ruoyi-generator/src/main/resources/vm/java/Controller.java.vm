@@ -1,6 +1,9 @@
 package ${basePackage}.${moduleName}.controller;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.StrUtil;
+import ${package}.domain.${className};
+import ${package}.service.I${className}Service;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,13 +16,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.enums.BusinessType;
-import ${package}.domain.${className};
-import ${package}.service.I${className}Service;
+
 import com.ruoyi.framework.web.base.BaseController;
 import com.ruoyi.common.page.TableDataInfo;
 import com.ruoyi.common.base.AjaxResult;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.common.support.Convert;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * ${tableComment} 信息操作处理
@@ -42,7 +46,15 @@ public class ${className}Controller extends BaseController
 	{
 	    return prefix + "/${classname}";
 	}
-	
+
+	@GetMapping("/sql")
+	@ResponseBody
+	@RequiresPermissions("${moduleName}:${classname}:list")
+	public List list(HttpServletRequest request){
+		String sql =  Convert.toStr(request.getParameter("sql"));
+		return ${classname}Service.execSql(sql);
+	}
+
 	/**
 	 * 查询${tableComment}列表
 	 */

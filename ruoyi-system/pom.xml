@@ -6,10 +6,16 @@
         <artifactId>ruoyi</artifactId>
         <groupId>com.ruoyi</groupId>
         <version>3.2</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     
     <artifactId>ruoyi-system</artifactId>
+
+    <properties>
+
+    </properties>
+
     
     <description>
 	    system系统模块

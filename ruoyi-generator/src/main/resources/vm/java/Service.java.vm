@@ -2,7 +2,7 @@ package ${package}.service;
 
 import ${package}.domain.${className};
 import com.baomidou.mybatisplus.extension.service.IService;
-
+import java.util.List;
 /**
  * ${tableComment} 服务层
  * 
@@ -11,5 +11,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface I${className}Service extends IService<${className}>
 {
-	
+    public List execSql(String sql);
 }

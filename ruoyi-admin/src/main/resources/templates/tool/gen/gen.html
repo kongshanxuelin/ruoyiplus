@@ -1,5 +1,5 @@
-<html  lang="zh" xmlns:th="http://www.thymeleaf.org"
-       xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <div class="layui-body-header">
     <ul class="kit-breadcrumb">
         <li class="kit-item">
@@ -22,184 +22,207 @@
     <div class="layui-row">
         <div class="layui-row">
             <div class="layui-btn-container" style="text-align: right;" shiro:hasPermission="tool:gen:code">
-                <input type="hidden" id="baseDir" th:value="${dir}" />
-                <button  class="layui-btn layui-btn-danger layui-btn-sm" lay-event="createProject">子工程生成</button>
+                <input type="hidden" id="baseDir" th:value="${dir}"/>
+                <button class="layui-btn layui-btn-danger layui-btn-sm" lay-event="createProject">子工程生成</button>
             </div>
             <form class="layui-form" action="" lay-filter="form-code">
+                <input type="hidden" name="genType" value="table"/>
                 <div class="layui-card">
                     <div class="layui-card-header">基本设置</div>
                     <div class="layui-card-body layui-row layui-col-space10">
                         <div class="layui-form-item">
                             <label class="layui-form-label">工程目录：</label>
                             <div class="layui-input-block">
-                                <input type="text" class="layui-input" name="dir" th:value="${dir + '\sumslack-test'}"  />
+                                <input type="text" class="layui-input" name="dir" th:value="${dir + '\sumslack-test'}"/>
                             </div>
                         </div>
                         <div class="layui-row layui-col-space10 layui-form-item">
                             <div class="layui-col-lg4">
                                 <label class="layui-form-label">模块名：</label>
                                 <div class="layui-input-block">
-                                    <input type="text" name="module" lay-verify="required" placeholder="" value="test" autocomplete="off" class="layui-input">
+                                    <input type="text" name="module" lay-verify="required" placeholder="" value="test"
+                                           autocomplete="off" class="layui-input">
                                 </div>
                             </div>
                             <div class="layui-col-lg4">
                                 <label class="layui-form-label">UrlBase：</label>
                                 <div class="layui-input-block">
-                                    <input type="text" name="uri" lay-verify="required" placeholder="" autocomplete="off" value="system/test" class="layui-input">
+                                    <input type="text" name="uri" lay-verify="required" placeholder=""
+                                           autocomplete="off" value="system/test" class="layui-input">
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
                 <div class="layui-card">
                     <div class="layui-card-header">代码生成设置</div>
                     <div class="layui-card-body layui-row layui-col-space10">
-                    <div class="layui-form-item">
-                        <div class="layui-col-lg4">
-                            <label class="layui-form-label">后台代码：</label>
-                            <div class="layui-input-block">
-                                <input type="checkbox" name="gen-java" lay-filter="gen-java" value="1" lay-skin="switch" lay-text="生成|不生成" />
-                            </div>
-                        </div>
-
-                        <div class="layui-col-lg4" id="c_package" style="display:none">
-                            <label class="layui-form-label">Package：</label>
-                            <div class="layui-input-block">
-                                <input type="text" name="package" placeholder="" value="com.sumslack.module.test" autocomplete="off" class="layui-input">
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="layui-tab layui-tab-brief">
-                        <ul class="layui-tab-title">
-                            <li class="layui-this">单表生成</li>
-                            <li>按SQL语句生成</li>
-                        </ul>
-                        <div class="layui-tab-content">
-                            <div class="layui-tab-item layui-show">
-                                <div id="genTable" class="layui-form-item">
-                                    <label class="layui-form-label">选择表：</label>
-                                    <div class="layui-input-inline">
-                                        <select name="table" lay-verify="required" lay-filter="tableList">
-                                            <option value="">请选择生成的表</option>
-                                        </select>
-                                    </div>
+                        <div class="layui-form-item">
+                            <div class="layui-col-lg4">
+                                <label class="layui-form-label">后台代码：</label>
+                                <div class="layui-input-block">
+                                    <input type="checkbox" name="gen-java" lay-filter="gen-java" value="1"
+                                           lay-skin="switch" lay-text="生成|不生成"/>
                                 </div>
-                                <table class="layui-table" lay-even lay-size="lg" lay-skin="line" id="tableColumns" lay-filter="tableColumns"></table>
-                                <script type="text/html" id="tableColumnVisible">
-                                    <input type="checkbox" lay-filter="filter-visible" value="true" checked name="{{d.columnName + '_visible'}}" lay-skin="switch">
-                                </script>
-                                <script type="text/html" id="tableColumnSortable">
-                                    <input type="checkbox" lay-filter="filter-sortable" value="true" checked name="{{d.columnName + '_sortable'}}" lay-skin="switch">
-                                </script>
-                                <script type="text/html" id="tableColumnEditField">
-                                    <input type="checkbox" lay-filter="filter-editField" value="true" checked name="{{d.columnName + '_editField'}}" lay-skin="switch">
-                                </script>
-                                <script type="text/html" id="tableColumnSearchField">
-                                    <input type="checkbox" lay-filter="filter-searchField" value="true" checked name="{{d.columnName + '_searchField'}}" lay-skin="switch">
-                                </script>
-                                <script type="text/html" id="tableColumnEditArg">
-                                    <textarea type="text" class="layui-textarea" rows="3" lay-filter="filter-editArg" name="{{d.columnName + '_editArg'}}"></textarea>
-                                </script>
-                                <script type="text/html" id="tableColumnComponent">
-                                    <div class="layui-btn-container verifyGroup" id="div_{{d.columnName + '_component'}}" data-pk="{{d.columnName + '_component'}}">
-                                        <div class="layui-btn layui-btn-xs addComponent"><i class="layui-icon">&#xe654;</i></div>
-                                        <input type="hidden" name="{{d.columnName + '_component'}}" />
-                                    </div>
-                                </script>
-
-                                <script type="text/html" id="tableColumnVerify">
-                                    <div class="layui-btn-container verifyGroup" id="div_{{d.columnName + '_verify'}}" data-pk="{{d.columnName + '_verify'}}">
-                                        <div class="layui-btn layui-btn-xs addVerify"><i class="layui-icon">&#xe654;</i></div>
-                                        <input type="hidden" name="{{d.columnName + '_verify'}}" />
-                                    </div>
-                                </script>
                             </div>
-                            <div class="layui-tab-item">
-                                <div id="genSQL" class="layui-row layui-col-space10 layui-form-item">
-                                    <div class="layui-card">
-                                        <div class="layui-card-header">SQL语句(目前仅支持Select语句)
-
-                                            <div class="layui-btn-group">
-                                                <button class="layui-btn layui-btn-sm"><i class="layui-icon"></i>解析SQL</button>
-                                            </div>
-
-                                        </div>
-                                        <div class="layui-card-body layui-card-body-sql" th:each="item,iter : ${#strings.arraySplit('1',',')}">
-                                            <!--
-                                            <div class="layui-col-md12">
-                                            [[${iter.index+1}]]. 输入SQL语句（系统自动会分析SQL类型）：
-                                            <div class="layui-btn-group">
-                                                <button class="layui-btn layui-btn-sm"><i class="layui-icon">&#xe631;</i></button>
-                                                <button class="layui-btn layui-btn-sm"><i class="layui-icon">&#xe640;</i></button>
-                                            </div>
-                                            </div>
-                                            -->
-                                            <div class="layui-col-md12" style="margin-top:4px;">
-                                                <textarea name="other" rows="6" placeholder="" class="layui-textarea"></textarea>
-                                            </div>
-                                        </div>
-
-                                    </div>
+                            <div class="layui-col-lg4" id="c_package" style="display:none">
+                                <label class="layui-form-label">Package：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="package" placeholder="" value="com.ruoyi" autocomplete="off" class="layui-input" />
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <div class="layui-col-lg3">
-                            <label class="layui-form-label">前端代码：</label>
-                            <div class="layui-input-block">
-                                <input type="checkbox" name="gen-html" value="1" lay-filter="gen-html" checked lay-skin="switch" lay-text="生成|不生成" />
+                        <div class="layui-tab layui-tab-brief" lay-filter="genType">
+                            <ul class="layui-tab-title">
+                                <li class="layui-this" lay-id="tab_table">单表生成</li>
+                                <li lay-id="tab_sql">按SQL语句生成</li>
+                            </ul>
+                            <div class="layui-tab-content">
+                                <div class="layui-tab-item layui-show">
+                                    <div id="genTable" class="layui-form-item">
+                                        <label class="layui-form-label">选择表：</label>
+                                        <div class="layui-input-inline">
+                                            <select name="table" lay-verify="required" lay-filter="tableList">
+                                                <option value="">请选择生成的表</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <table class="layui-table" lay-even lay-size="lg" lay-skin="line" id="tableColumns"
+                                           lay-filter="tableColumns"></table>
+                                    <script type="text/html" id="tableColumnVisible">
+                                        <input type="checkbox" lay-filter="filter-visible" value="true" checked
+                                               name="{{d.columnName + '_visible'}}" lay-skin="switch">
+                                    </script>
+                                    <script type="text/html" id="tableColumnSortable">
+                                        <input type="checkbox" lay-filter="filter-sortable" value="true" checked
+                                               name="{{d.columnName + '_sortable'}}" lay-skin="switch">
+                                    </script>
+                                    <script type="text/html" id="tableColumnEditField">
+                                        <input type="checkbox" lay-filter="filter-editField" value="true" checked
+                                               name="{{d.columnName + '_editField'}}" lay-skin="switch">
+                                    </script>
+                                    <script type="text/html" id="tableColumnSearchField">
+                                        <input type="checkbox" lay-filter="filter-searchField" value="true" checked
+                                               name="{{d.columnName + '_searchField'}}" lay-skin="switch">
+                                    </script>
+                                    <script type="text/html" id="tableColumnEditArg">
+                                        <textarea type="text" class="layui-textarea" rows="3"
+                                                  lay-filter="filter-editArg"
+                                                  name="{{d.columnName + '_editArg'}}"></textarea>
+                                    </script>
+                                    <script type="text/html" id="tableColumnComponent">
+                                        <div class="layui-btn-container verifyGroup"
+                                             id="div_{{d.columnName + '_component'}}"
+                                             data-pk="{{d.columnName + '_component'}}">
+                                            <div class="layui-btn layui-btn-xs addComponent"><i class="layui-icon">&#xe654;</i>
+                                            </div>
+                                            <input type="hidden" name="{{d.columnName + '_component'}}"/>
+                                        </div>
+                                    </script>
+                                    <script type="text/html" id="tableColumnVerify">
+                                        <div class="layui-btn-container verifyGroup"
+                                             id="div_{{d.columnName + '_verify'}}"
+                                             data-pk="{{d.columnName + '_verify'}}">
+                                            <div class="layui-btn layui-btn-xs addVerify"><i
+                                                    class="layui-icon">&#xe654;</i></div>
+                                            <input type="hidden" name="{{d.columnName + '_verify'}}"/>
+                                        </div>
+                                    </script>
+                                </div>
+                                <div class="layui-tab-item">
+                                    <div id="genSQL" class="layui-row layui-col-space10 layui-form-item">
+                                        <div class="layui-card">
+                                            <div class="layui-card-header">SQL语句(目前仅支持Select语句)
+                                                <div class="layui-btn-group">
+                                                    <button class="layui-btn layui-btn-sm" id="btnParserSql"><i
+                                                            class="layui-icon"></i>解析SQL
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="layui-card-body layui-card-body-sql"
+                                                 th:each="item,iter : ${#strings.arraySplit('1',',')}">
+                                                <!--
+                                                <div class="layui-col-md12">
+                                                [[${iter.index+1}]]. 输入SQL语句（系统自动会分析SQL类型）：
+                                                <div class="layui-btn-group">
+                                                    <button class="layui-btn layui-btn-sm"><i class="layui-icon">&#xe631;</i></button>
+                                                    <button class="layui-btn layui-btn-sm"><i class="layui-icon">&#xe640;</i></button>
+                                                </div>
+                                                </div>
+                                                -->
+                                                <div class="layui-col-md12" style="margin-top:4px;">
+                                                    <textarea name="sql" rows="6" placeholder=""
+                                                              class="layui-textarea"></textarea>
+                                                </div>
+                                                <div class="layui-col-md12" style="margin-top:4px;">
+                                                    <table class="layui-table" lay-even lay-size="lg" lay-skin="line"
+                                                           id="tableSqlColumns" lay-filter="tableSqlColumns"></table>
+                                                    <script type="text/html" id="sql_edit_label">
+                                                        <input type="text" class="layui-input"
+                                                               lay-filter="filter-sql-edit"
+                                                               name="{{d.name + '_sql_edit'}}" lay-verify="required"/>
+                                                    </script>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="layui-col-lg3">
-                            <label class="layui-form-label">仅列表页：</label>
-                            <div class="layui-input-block">
-                                <input type="checkbox" name="only-list" lay-filter="only-list" value="1" lay-skin="switch"  />
+                        <div class="layui-form-item">
+                            <div class="layui-col-lg3">
+                                <label class="layui-form-label">前端代码：</label>
+                                <div class="layui-input-block">
+                                    <input type="checkbox" name="gen-html" value="1" lay-filter="gen-html" checked
+                                           lay-skin="switch" lay-text="生成|不生成"/>
+                                </div>
+                            </div>
+                            <div class="layui-col-lg3">
+                                <label class="layui-form-label">仅列表页：</label>
+                                <div class="layui-input-block">
+                                    <input type="checkbox" name="only-list" lay-filter="only-list" value="1"
+                                           lay-skin="switch"/>
+                                </div>
+                            </div>
+                            <div class="layui-col-lg3">
+                                <label class="layui-form-label">前端模板：</label>
+                                <div class="layui-input-block">
+                                    <select name="tmpl" lay-filter="tmpl">
+                                        <option value="layui">layUI表格型</option>
+                                        <option value="layui-treegrid">layUI表格树型</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-col-lg3 layui-treegrid">
+                                <label class="layui-form-label">父Key名：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" class="layui-input" lay-filter="filter-verify"
+                                           name="key_parentId" value="parentId">
+                                </div>
+                            </div>
+                            <div class="layui-col-lg3 layui-treegrid">
+                                <label class="layui-form-label">图标列名：</label>
+                                <div class="layui-input-block">
+                                    <input type="text" class="layui-input" lay-filter="filter-verify"
+                                           name="key_titleIcon" value="xxxName">
+                                </div>
                             </div>
                         </div>
-                        <div class="layui-col-lg3">
-                            <label class="layui-form-label">前端模板：</label>
-                            <div class="layui-input-block">
-                                <select name="tmpl" lay-filter="tmpl">
-                                    <option value="layui">layUI表格型</option>
-                                    <option value="layui-treegrid">layUI表格树型</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="layui-col-lg3 layui-treegrid">
-                            <label class="layui-form-label">父Key名：</label>
-                            <div class="layui-input-block">
-                                <input type="text" class="layui-input" lay-filter="filter-verify" name="key_parentId" value="parentId">
-                            </div>
-                        </div>
-                        <div class="layui-col-lg3 layui-treegrid">
-                            <label class="layui-form-label">图标列名：</label>
-                            <div class="layui-input-block">
-                                <input type="text" class="layui-input" lay-filter="filter-verify" name="key_titleIcon" value="xxxName">
-                            </div>
-                        </div>
-
-                    </div>
                     </div>
                 </div>
-
-
                 <div class="layui-form-item" style="text-align: right;">
-                        <div class="layui-input-block">
-                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-                            <button class="layui-btn layui-btn-warm" lay-submit lay-filter="btn-gen-code-preview">预览代码</button>
-                            <button class="layui-btn layui-btn-danger" lay-submit lay-filter="btn-gen-code">生成代码</button>
-                            <!--<button class="layui-btn layui-btn-primary" lay-submit lay-filter="btn-gen-code-download">下载代码</button>-->
-                        </div>
+                    <div class="layui-input-block">
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        <button class="layui-btn layui-btn-warm" lay-submit lay-filter="btn-gen-code-preview">预览代码
+                        </button>
+                        <button class="layui-btn layui-btn-danger" lay-submit lay-filter="btn-gen-code">生成代码</button>
+                        <!--<button class="layui-btn layui-btn-primary" lay-submit lay-filter="btn-gen-code-download">下载代码</button>-->
                     </div>
-
                 </div>
-            </form>
         </div>
+        </form>
     </div>
+</div>
 </div>
 <script th:inline="javascript">
     var editFlag = [[${@permission.hasPermi('system:user:edit')}]];
@@ -209,64 +232,90 @@
     var prefix = ctx + "tool/gen";
 </script>
 <script>
-    layui.use(['jquery','table','layer','eleTree','form','selectM','selectN','common'], function() {
+    layui.use(['jquery', 'table', 'layer', 'eleTree', 'form', 'selectM', 'selectN', 'element', 'common'], function () {
         var $ = layui.jquery,
             layer = layui.layer,
             eleTree = layui.eleTree,
             form = layui.form,
             common = layui.common,
+            element = layui.element,
             selectM = layui.selectM,
             table = layui.table;
         var pkColumn = {};
 
-        //
-        $('[lay-event=createProject]').click(function(){
+        //Tab变化侦听
+        element.on('tab(genType)', function () {
+            if (this.getAttribute('lay-id').indexOf("sql") >= 0) {
+                $("[name=genType]").val("sql");
+            } else {
+                $("[name=genType]").val("table");
+            }
+        });
+        //解析SQL
+        $("#btnParserSql").click(function () {
+            common.ajax.post(prefix + "/code-preview", {
+                genType: "sql",
+                sql: $("[name=sql]").val()
+            }, function (json) {
+                console.log("preview:", json.columns);
+                table.render({
+                    elem: "#tableSqlColumns",
+                    data: json.columns,
+                    cols: new Array([
+                        {field: 'name', title: '字段名', align: 'center', width: 200, sort: true},
+                        {title: '显示名', width: 250, templet: "#sql_edit_label"}
+                    ])
+                });
+            });
+            return false;
+        });
+        $('[lay-event=createProject]').click(function () {
             layer.open({
                 shade: false,
                 fixed: false,
                 maxmin: true,
                 title: '生成您的项目工程',
-                content: '<div style="margin:5px;"><form class="layui-form" lay-filter="form-project">'+
+                content: '<div style="margin:5px;"><form class="layui-form" lay-filter="form-project">' +
                     '<div class="layui-form-item">\n' +
                     '            <label class="layui-form-label">项目名：</label>\n' +
                     '            <div class="layui-input-block">\n' +
                     '                <input class="layui-input" type="text" name="project_name" lay-verify="required" value="test" />\n' +
                     '            </div>\n' +
-                    '        </div>'+
+                    '        </div>' +
                     '<div class="layui-form-item">\n' +
                     '            <label class="layui-form-label">生成路径：</label>\n' +
                     '            <div class="layui-input-block">\n' +
                     '                <input class="layui-input" type="text" name="project_path" lay-verify="required" value="" />\n' +
                     '            </div>\n' +
-                    '        </div>'+
+                    '        </div>' +
                     '<div class="layui-form-item">\n' +
                     '            <label class="layui-form-label">使用版本：</label>\n' +
                     '            <div class="layui-input-block">\n' +
                     '                <select name="project_version" lay-verify="required"><option value="3.2">3.2</option></select>\n' +
                     '            </div>\n' +
-                    '        </div>'+
+                    '        </div>' +
                     '<div class="layui-form-item">\n' +
                     '            <label class="layui-form-label">根包名：</label>\n' +
                     '            <div class="layui-input-block">\n' +
                     '                <input class="layui-input" type="text" name="project_pack" lay-verify="required" value="com.ruoyi" />\n' +
                     '            </div>\n' +
-                    '        </div>'+
+                    '        </div>' +
                     '</form></div>',
                 area: ['600px', '350px'],
-                btn:["生成","取消"],
-                success: function(layero, index){
+                btn: ["生成", "取消"],
+                success: function (layero, index) {
                     $("[name=project_path]").val($("#baseDir").val());
-                    form.render("select","form-project");
+                    form.render("select", "form-project");
                 },
-                yes: function(index, layero){
+                yes: function (index, layero) {
                     var projectName = encodeURIComponent($("[name=project_name]").val());
                     var projectPath = encodeURIComponent($("[name=project_path]").val());
                     var version = encodeURIComponent($("[name=project_version]").val());
                     var pack = encodeURIComponent($("[name=project_pack]").val());
-                    console.log("xxx:",projectName,projectPath,version,pack);
-                    common.ajax.get(prefix+"/code-download-project?dir="+projectPath+"&version="+version+"&pack="+pack+"&projectName="+projectName,function(json){
-                        if(json.res){
-                            layer.alert("代码生成工程，请导入 " + $("[name=project_path]").val() +  $("[name=project_name]").val() + " 这个maven项目到Eclipse或IDEA中查看！");
+                    console.log("xxx:", projectName, projectPath, version, pack);
+                    common.ajax.get(prefix + "/code-download-project?dir=" + projectPath + "&version=" + version + "&pack=" + pack + "&projectName=" + projectName, function (json) {
+                        if (json.res) {
+                            layer.alert("代码生成工程，请导入 " + $("[name=project_path]").val() + $("[name=project_name]").val() + " 这个maven项目到Eclipse或IDEA中查看！");
                         }
                         layer.close(index);
                     });
@@ -274,118 +323,118 @@
             });
         });
 
-        var selectTableFunc = function(_table){
+        var selectTableFunc = function (_table) {
             table.render({
                 elem: '#tableColumns'
-                ,method: 'GET'
-                ,height: 400
-                ,url: prefix + "/tableInfo?table=" + _table
-                ,page: false
-                ,done: function(res,curr,count){
-                    if(typeof(res.pk)!="undefined"){
+                , method: 'GET'
+                , height: 400
+                , url: prefix + "/tableInfo?table=" + _table
+                , page: false
+                , done: function (res, curr, count) {
+                    if (typeof (res.pk) != "undefined") {
                         pkColumn = res.pk;
                     }
-                    form.render("select","form-code");
+                    form.render("select", "form-code");
                     //渲染inputTags
-                    $(".verifyGroup").click(function(e){
-                        var _this = $(this),_name = $(this).data("pk"),verifyGroup = $("#div_"+_name);
-                        console.log("verifyGroup:",verifyGroup);
-                        if(verifyGroup.selector.indexOf("component")>=0){
+                    $(".verifyGroup").click(function (e) {
+                        var _this = $(this), _name = $(this).data("pk"), verifyGroup = $("#div_" + _name);
+                        console.log("verifyGroup:", verifyGroup);
+                        if (verifyGroup.selector.indexOf("component") >= 0) {
                             layer.open({
                                 title: '添加控件类型',
-                                content: '<div class="layui-form"><form class="layui-form" lay-filter="form-component">'+
-                                    '<div class="layui-form-item">'+
-                                    '<input name="c_component" type="radio" class="c_component" title="根据类型自动" checked value=""/>'+
-                                    '<input name="c_component" type="radio" class="c_component" title="单行输入"value="text" />'+
-                                    '<input name="c_component" type="radio" class="c_component" title="多行输入" value="textarea"/>'+
-                                    '</div>'+
-                                    '<div class="layui-form-item">'+
-                                    '<input name="c_component" type="radio" class="c_component" title="数据字典下拉框"value="dict" />'+
-                                    '<input name="c_component" type="radio" class="c_component" title="下拉框" value="select"/>'+
-                                    '<input name="c_component" type="radio" class="c_component" title="复选框" value="checkbox"/>'+
-                                    '<input name="c_component" type="radio" class="c_component" title="单选框" value="radio"/>'+
-                                    '<input name="c_component" type="radio" class="c_component" title="开关" value="switch"/>'+
-                                    '<input name="c_component" type="radio" class="c_component" title="日期" value="date"/>'+
-                                    '</div>'+
+                                content: '<div class="layui-form"><form class="layui-form" lay-filter="form-component">' +
+                                    '<div class="layui-form-item">' +
+                                    '<input name="c_component" type="radio" class="c_component" title="根据类型自动" checked value=""/>' +
+                                    '<input name="c_component" type="radio" class="c_component" title="单行输入"value="text" />' +
+                                    '<input name="c_component" type="radio" class="c_component" title="多行输入" value="textarea"/>' +
+                                    '</div>' +
+                                    '<div class="layui-form-item">' +
+                                    '<input name="c_component" type="radio" class="c_component" title="数据字典下拉框"value="dict" />' +
+                                    '<input name="c_component" type="radio" class="c_component" title="下拉框" value="select"/>' +
+                                    '<input name="c_component" type="radio" class="c_component" title="复选框" value="checkbox"/>' +
+                                    '<input name="c_component" type="radio" class="c_component" title="单选框" value="radio"/>' +
+                                    '<input name="c_component" type="radio" class="c_component" title="开关" value="switch"/>' +
+                                    '<input name="c_component" type="radio" class="c_component" title="日期" value="date"/>' +
+                                    '</div>' +
                                     '</form></div>',
-                                success: function(layero, index){
+                                success: function (layero, index) {
                                     //初始化赋值
-                                    var _checkValues = $("[name="+_name+"]").val();
+                                    var _checkValues = $("[name=" + _name + "]").val();
                                     var _inputs = _checkValues.split(",");
                                     var verifys = $('.verify');
                                     for (var i = 0; i < _inputs.length; i++) {
-                                        for (var j = 0;j< verifys.length;j++) {
-                                            if(_inputs[i] == verifys[j].value){
-                                                $(verifys[j]).attr("checked",true);
+                                        for (var j = 0; j < verifys.length; j++) {
+                                            if (_inputs[i] == verifys[j].value) {
+                                                $(verifys[j]).attr("checked", true);
                                             }
                                         }
                                     }
-                                    form.render(null,"form-component");
+                                    form.render(null, "form-component");
                                 },
-                                yes: function(index, layero){
+                                yes: function (index, layero) {
                                     var verifys = $('.c_component:checked');
                                     //清空并重新赋值
                                     verifyGroup.find('.verifybtn').remove();
                                     var _values = "";
                                     for (var i = 0; i < verifys.length; i++) {
-                                        _values  = "," + $(verifys[i]).val() + _values;
-                                        var btn =  '<button class="layui-btn layui-btn-xs verifybtn" type="button" >'+$(verifys[i]).attr('title')+ '</button>'
-                                        console.log("append btn:",btn)
+                                        _values = "," + $(verifys[i]).val() + _values;
+                                        var btn = '<button class="layui-btn layui-btn-xs verifybtn" type="button" >' + $(verifys[i]).attr('title') + '</button>'
+                                        console.log("append btn:", btn)
                                         verifyGroup.append(btn);
                                     }
-                                    if(_values.indexOf(",")==0) _values = _values.substring(1,_values.length);
-                                    $("[name="+_name+"]").val(_values);
+                                    if (_values.indexOf(",") == 0) _values = _values.substring(1, _values.length);
+                                    $("[name=" + _name + "]").val(_values);
                                     layer.close(index);
                                 }
                             });
-                        }else{
+                        } else {
                             layer.open({
                                 title: '添加校验类型',
-                                content: '<div class="layui-form"><form class="layui-form" lay-filter="form-required">'+
-                                    '<div class="layui-form-item">'+
-                                    '<input type="checkbox" class="verify" title="必填" value="required"/>'+
-                                    '<input type="checkbox" class="verify" title="邮箱"value="email" />'+
-                                    '<input type="checkbox" class="verify" title="手机" value="phone"/>'+
-                                    '</div>'+
-                                    '<div class="layui-form-item">'+
-                                    '<input type="checkbox" class="verify" title="数字"value="number" />'+
-                                    '<input type="checkbox" class="verify" title="日期" value="date"/>'+
-                                    '<input type="checkbox" class="verify" title="日期范围" value="dateRange"/>'+
-                                    '<input type="checkbox" class="verify" title="日期时间" value="datetime"/>'+
-                                    '<input type="checkbox" class="verify" title="日期时间范围" value="datetimeRange"/>'+
-                                    '<input type="checkbox" class="verify" title="网址" value="url"/>'+
-                                    '</div>'+
-                                    '<div class="layui-form-item">'+
-                                    '<input type="checkbox" class="verify" title="身份证"value="identity" />'+
-                                    '</div>'+
+                                content: '<div class="layui-form"><form class="layui-form" lay-filter="form-required">' +
+                                    '<div class="layui-form-item">' +
+                                    '<input type="checkbox" class="verify" title="必填" value="required"/>' +
+                                    '<input type="checkbox" class="verify" title="邮箱"value="email" />' +
+                                    '<input type="checkbox" class="verify" title="手机" value="phone"/>' +
+                                    '</div>' +
+                                    '<div class="layui-form-item">' +
+                                    '<input type="checkbox" class="verify" title="数字"value="number" />' +
+                                    '<input type="checkbox" class="verify" title="日期" value="date"/>' +
+                                    '<input type="checkbox" class="verify" title="日期范围" value="dateRange"/>' +
+                                    '<input type="checkbox" class="verify" title="日期时间" value="datetime"/>' +
+                                    '<input type="checkbox" class="verify" title="日期时间范围" value="datetimeRange"/>' +
+                                    '<input type="checkbox" class="verify" title="网址" value="url"/>' +
+                                    '</div>' +
+                                    '<div class="layui-form-item">' +
+                                    '<input type="checkbox" class="verify" title="身份证"value="identity" />' +
+                                    '</div>' +
                                     '</form></div>',
-                                success: function(layero, index){
+                                success: function (layero, index) {
                                     //初始化赋值
-                                    var _checkValues = $("[name="+_name+"]").val();
+                                    var _checkValues = $("[name=" + _name + "]").val();
                                     var _inputs = _checkValues.split(",");
                                     var verifys = $('.verify');
                                     for (var i = 0; i < _inputs.length; i++) {
-                                        for (var j = 0;j< verifys.length;j++) {
-                                            if(_inputs[i] == verifys[j].value){
-                                                $(verifys[j]).attr("checked",true);
+                                        for (var j = 0; j < verifys.length; j++) {
+                                            if (_inputs[i] == verifys[j].value) {
+                                                $(verifys[j]).attr("checked", true);
                                             }
                                         }
                                     }
-                                    form.render(null,"form-required");
+                                    form.render(null, "form-required");
                                 },
-                                yes: function(index, layero){
+                                yes: function (index, layero) {
                                     var verifys = $('.verify:checked');
                                     //清空并重新赋值
                                     verifyGroup.find('.verifybtn').remove();
                                     var _values = "";
                                     for (var i = 0; i < verifys.length; i++) {
-                                        _values  = "," + $(verifys[i]).val() + _values;
-                                        var btn =  '<button class="layui-btn layui-btn-xs verifybtn" type="button" >'+$(verifys[i]).attr('title')+ '</button>'
-                                        console.log("append btn:",btn)
+                                        _values = "," + $(verifys[i]).val() + _values;
+                                        var btn = '<button class="layui-btn layui-btn-xs verifybtn" type="button" >' + $(verifys[i]).attr('title') + '</button>'
+                                        console.log("append btn:", btn)
                                         verifyGroup.append(btn);
                                     }
-                                    if(_values.indexOf(",")==0) _values = _values.substring(1,_values.length);
-                                    $("[name="+_name+"]").val(_values);
+                                    if (_values.indexOf(",") == 0) _values = _values.substring(1, _values.length);
+                                    $("[name=" + _name + "]").val(_values);
                                     layer.close(index);
                                 }
                             });
@@ -393,86 +442,88 @@
                     });
 
                 }
-                ,cols: new Array([
-                    {field: 'columnComment', title: '字段名',align: 'center', width:150, sort: true, fixed: 'left'}
-                    ,{field: 'columnName', title: '字段英文名',align: 'center', width:120, sort: true}
-                    ,{title: '列表中显示',width:120,align: 'center',templet: '#tableColumnVisible'}
-                    ,{title: '列表中排序',width:120,align: 'center',templet: '#tableColumnSortable'}
-                    ,{title: '搜索字段',width:120,align: 'center',templet: '#tableColumnSearchField'}
-                    ,{title: '可编辑',width:120,align: 'center',templet: '#tableColumnEditField'}
-                    ,{title: '编辑控件',align: 'left',templet: '#tableColumnComponent'}
-                    ,{title: '控件参数',align: 'left',templet: '#tableColumnEditArg'}
-                    ,{title: '校验规则',align: 'left',templet: '#tableColumnVerify'}
+                , cols: new Array([
+                    {field: 'columnComment', title: '字段名', align: 'center', width: 150, sort: true, fixed: 'left'}
+                    , {field: 'columnName', title: '字段英文名', align: 'center', width: 120, sort: true}
+                    , {title: '列表中显示', width: 120, align: 'center', templet: '#tableColumnVisible'}
+                    , {title: '列表中排序', width: 120, align: 'center', templet: '#tableColumnSortable'}
+                    , {title: '搜索字段', width: 120, align: 'center', templet: '#tableColumnSearchField'}
+                    , {title: '可编辑', width: 120, align: 'center', templet: '#tableColumnEditField'}
+                    , {title: '编辑控件', align: 'left', templet: '#tableColumnComponent'}
+                    , {title: '控件参数', align: 'left', templet: '#tableColumnEditArg'}
+                    , {title: '校验规则', align: 'left', templet: '#tableColumnVerify'}
                 ])
             });
         }
-        common.ajax.post(prefix + "/list",{},function(json){
-            $.each(json.data,function(i,n){
-                if(n.tableName == "m_test")
-                    $("[name=table]").append("<option value='"+n.tableName+"' selected>"+n.tableComment+"</option>")
+        common.ajax.post(prefix + "/list", {}, function (json) {
+            $.each(json.data, function (i, n) {
+                if (n.tableName == "m_test")
+                    $("[name=table]").append("<option value='" + n.tableName + "' selected>" + n.tableComment + "</option>")
                 else
-                    $("[name=table]").append("<option value='"+n.tableName+"'>"+n.tableComment+"</option>")
+                    $("[name=table]").append("<option value='" + n.tableName + "'>" + n.tableComment + "</option>")
             });
             //form.render('select');
             selectTableFunc("m_test");
         });
-        form.on('select(tableList)',function(data){
+        form.on('select(tableList)', function (data) {
             var _table = data.value;
             selectTableFunc(_table);
         });
-        form.on('select(tmpl)',function(data){
-           if(data.value == "layui-treegrid"){
-               $(".layui-treegrid").show();
-           }else{
-               $(".layui-treegrid").hide();
-           }
+        form.on('select(tmpl)', function (data) {
+            if (data.value == "layui-treegrid") {
+                $(".layui-treegrid").show();
+            } else {
+                $(".layui-treegrid").hide();
+            }
         });
 
-        form.on('switch(gen-java)', function(data){
-            if(data.elem.checked){
+        form.on('switch(gen-java)', function (data) {
+            if (data.elem.checked) {
                 $("#c_package").show();
-            }else{
+            } else {
                 $("#c_package").hide();
             }
         });
 
-        form.on("submit(btn-gen-code)",function(data){
-            common.ajax.post(prefix + "/code-gen-dir",data.field,function(json){
+        form.on("submit(btn-gen-code)", function (data) {
+            common.ajax.post(prefix + "/code-gen-dir", data.field, function (json) {
                 console.log(json);
-                if(json.res){
+                if (json.res) {
                     layer.alert("生成代码成功，请添加前端路由代码后查看效果！");
-                }else{
+                } else {
                     layer.alert(json.msg || "生成代码失败！");
                 }
             });
             return false;
         });
-        form.on("submit(btn-gen-code-download)",function(data){
+        form.on("submit(btn-gen-code-download)", function (data) {
             console.log(data.field);
-            common.ajax.post(prefix + "/code-download",data.field,function(json){
+            common.ajax.post(prefix + "/code-download", data.field, function (json) {
 
             });
             return false;
         });
 
-        form.on("submit(btn-gen-code-preview)",function(data){
-            common.ajax.post(prefix + "/code-preview",data.field,function(json){
+        form.on("submit(btn-gen-code-preview)", function (data) {
+            common.ajax.post(prefix + "/code-preview", data.field, function (json) {
                 var items = [];
-                layui.each(json,function (i,n) {
-                    console.log(i,n);
+                layui.each(json, function (i, n) {
+                    console.log(i, n);
                     // items.push({
                     //     title:i.substring(i.lastIndexOf("/")+1,i.length).replace(/\.vm/g,""),
                     //     content:'<pre>'+ n + '</pre>'});
-                    n = n.replace(/</g,"&lt;");
-                    n = n.replace(/>/g,"&gt;");
-                    items.push({title:i.substring(i.lastIndexOf("/")+1,i.length).replace(/\.vm/g,"")
-                        ,content:"<pre class=\"layui-code\">"+n+"</pre>"})
+                    n = n.replace(/</g, "&lt;");
+                    n = n.replace(/>/g, "&gt;");
+                    items.push({
+                        title: i.substring(i.lastIndexOf("/") + 1, i.length).replace(/\.vm/g, "")
+                        , content: "<pre class=\"layui-code\">" + n + "</pre>"
+                    })
                 });
                 layer.tab({
-                    area: ['80%', '80%'] ,
+                    area: ['80%', '80%'],
                     tab: items
                 });
-                layui.use('code', function(){
+                layui.use('code', function () {
                     layui.code();
                 });
             });
@@ -483,7 +534,7 @@
 <!-- 样式 -->
 <style scoped>
     .layui-treegrid {
-        display:none;
+        display: none;
     }
 </style>
 </html>

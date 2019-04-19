@@ -1,11 +1,14 @@
 package ${package}.service.impl;
+import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import ${package}.mapper.${className}Mapper;
 import ${package}.domain.${className};
 import ${package}.service.I${className}Service;
-
+import java.util.List;
 /**
  * ${tableComment} 服务层实现
  * 
@@ -15,5 +18,16 @@ import ${package}.service.I${className}Service;
 @Service
 public class ${className}ServiceImpl extends ServiceImpl<${className}Mapper, ${className}> implements I${className}Service 
 {
-	
+    @Autowired
+    private ${className}Mapper ${classname}Mapper;
+
+    public List execSql(String sql){
+        try {
+            final List list = ${classname}Mapper.execSql(sql);
+            return list;
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+        return null;
+    }
 }

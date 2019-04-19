@@ -5,6 +5,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.base.BaseEntity;
 
+
 /**
  * 参数配置表 sys_config
  * 
@@ -13,7 +14,6 @@ import com.ruoyi.common.base.BaseEntity;
 public class SysConfig extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
-
     /** 参数主键 */
     @Excel(name = "参数主键")
     private Long configId;

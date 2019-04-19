@@ -71,8 +71,8 @@ spring:
 #mybatis
 mybatis-plus:
   mapper-locations: classpath*:mapper/**/*Mapper.xml
-  #实体扫描，多个package用逗号或者分号分隔
-  typeAliasesPackage: com.ruoyi
+  # 内置项目中所有实体扫描包路径
+  typeAliasesPackage: com.ruoyi.system.domain,com.ruoyi.quartz.domain,com.ruoyi.generator.domain
   configuration:
     map-underscore-to-camel-case: true
     cache-enabled: false
@@ -144,7 +144,7 @@ xss:
   # 过滤开关
   enabled: true
   # 排除链接（多个用逗号分隔）
-  excludes: /system/notice/*
+  excludes: /system/notice/*,/system/job/*
   # 匹配链接
   urlPatterns: /system/*,/monitor/*,/tool/*
 

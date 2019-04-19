@@ -1,9 +1,15 @@
 package com.ruoyi.framework.config;
 
+import com.baomidou.mybatisplus.core.MybatisConfiguration;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.baomidou.mybatisplus.extension.plugins.OptimisticLockerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.PerformanceInterceptor;
+import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
+import com.ruoyi.framework.config.properties.DruidProperties;
+import org.apache.ibatis.plugin.Interceptor;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.type.JdbcType;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,7 +18,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @EnableTransactionManagement(proxyTargetClass = true)
 @Configuration
-@MapperScan("com.ruoyi.**.mapper*")
+@MapperScan("com.**.mapper*")
 public class MybatisPlusConfig {
 
     /*
@@ -44,7 +50,7 @@ public class MybatisPlusConfig {
 
 
 //    @Bean("sqlSessionFactory")
-//    public SqlSessionFactory sqlSessionFactory(DruidConfig druidConfig,DruidProperties druidProperties) throws Exception {
+//    public SqlSessionFactory sqlSessionFactory(DruidConfig druidConfig, DruidProperties druidProperties) throws Exception {
 //        MybatisSqlSessionFactoryBean sqlSessionFactory = new MybatisSqlSessionFactoryBean();
 //        sqlSessionFactory.setDataSource(druidConfig.eformDataSource(druidProperties));
 //        //sqlSessionFactory.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:/mapper/*/*Mapper.xml"));

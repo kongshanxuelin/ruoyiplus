@@ -158,7 +158,7 @@ layui.define(mods, function(exports) {
       //     return route;
       //   }
       // });
-      // 配置路由
+      // TODO: 这里可以动态读取子工程的配置路由地址push到common.routes
       var routeOpts = {
         routes: common.routes
       };

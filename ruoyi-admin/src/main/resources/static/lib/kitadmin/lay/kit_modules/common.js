@@ -188,6 +188,7 @@ layui.define(["layer", "utils","jquery"],function (exports) {
                 return msg;
             }
         },
+        //系统默认配置路由
         routes:[{
             path: '/',
             component: '/js/views/app.html',
@@ -263,12 +264,17 @@ layui.define(["layer", "utils","jquery"],function (exports) {
             component: '/monitor/server',
             name: '服务器信息'
         },
-        //TODO：添加您模块的路由地址，自动生成前端代码后
+        //添加您模块的路由地址，自动生成前端代码后
         {
-            path: '/system/test',
-            component: '/system/test/mTest',
+            path: '/system/test2',
+            component: '/system/test2/mTest',
             name: '前后台测试'
-        }
+        },
+            {
+                path: '/system/job',
+                component: '/system/job/jobInfo',
+                name: '招聘岗位'
+            }
         ]
     };
     exports('common', obj);

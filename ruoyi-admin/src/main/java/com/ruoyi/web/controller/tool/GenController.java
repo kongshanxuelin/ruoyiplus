@@ -10,8 +10,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.StrUtil;
+import com.alibaba.druid.sql.dialect.mysql.parser.MySqlStatementParser;
 import com.ruoyi.generator.util.GenUtils;
 import com.ruoyi.generator.util.VelocityInitializer;
+import com.ruoyi.web.sql.SqlParserManager;
 import org.apache.commons.io.IOUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.velocity.Template;
@@ -88,9 +90,14 @@ public class GenController extends BaseController
     public Map previewCode(HttpServletRequest request)
     {
         Map retMap = new HashMap();
-        String table = Convert.toStr(request.getParameter("table"));
-        Map<String,String[]> _params = request.getParameterMap();
-        retMap = genService.previewCode(TableInfo.GenStyle.Web,table,_params);
+        String genType = Convert.toStr(request.getParameter("genType"),"table");
+        if(genType.equals("sql")){
+            retMap = SqlParserManager.getInstance().parser(Convert.toStr(request.getParameter("sql")));
+        }else{
+            String table = Convert.toStr(request.getParameter("table"));
+            Map<String,String[]> _params = request.getParameterMap();
+            retMap = genService.previewCode(TableInfo.GenStyle.Web,table,_params);
+        }
         return retMap;
     }
 
@@ -295,6 +302,8 @@ public class GenController extends BaseController
 
         //复制当前项目的配置文件
         File config = copy(resource,"application.yml");
+        //TODO： 给application.yml的typeAliasesPackage设置子工程基类的扫描实体包
+
         copy(resource,"application-druid.yml");
         copy(resource,"logback.xml");
         copy(resource,"banner.txt");

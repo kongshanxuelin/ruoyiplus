@@ -11,5 +11,24 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<setting name="logImpl"                  value="SLF4J" /> <!-- 指定 MyBatis 所用日志的具体实现 -->
 		<!-- <setting name="mapUnderscoreToCamelCase" value="true"/>  驼峰式命名 -->
 	</settings>
-	
+	<typeAliases>
+		<typeAlias type="com.ruoyi.system.domain.SysConfig" alias="SysConfig"/>
+		<typeAlias type="com.ruoyi.system.domain.SysDept" alias="SysDept"/>
+		<typeAlias type="com.ruoyi.system.domain.SysDictData" alias="SysDictData"/>
+		<typeAlias type="com.ruoyi.system.domain.SysDictType" alias="SysDictType"/>
+		<typeAlias type="com.ruoyi.system.domain.SysLogininfor" alias="SysLogininfor"/>
+		<typeAlias type="com.ruoyi.system.domain.SysMenu" alias="SysMenu"/>
+		<typeAlias type="com.ruoyi.system.domain.SysNotice" alias="SysNotice"/>
+		<typeAlias type="com.ruoyi.system.domain.SysOperLog" alias="SysOperLog"/>
+		<typeAlias type="com.ruoyi.system.domain.SysPost" alias="SysPost"/>
+		<typeAlias type="com.ruoyi.system.domain.SysRole" alias="SysRole"/>
+		<typeAlias type="com.ruoyi.system.domain.SysRoleDept" alias="SysRoleDept"/>
+
+		<typeAlias type="com.ruoyi.system.domain.SysRoleMenu" alias="SysRoleMenu"/>
+		<typeAlias type="com.ruoyi.system.domain.SysUser" alias="SysUser"/>
+		<typeAlias type="com.ruoyi.system.domain.SysUserOnline" alias="SysUserOnline"/>
+		<typeAlias type="com.ruoyi.system.domain.SysUserPost" alias="SysUserPost"/>
+		<typeAlias type="com.ruoyi.system.domain.SysUserRole" alias="SysUserRole"/>
+
+	</typeAliases>
 </configuration>

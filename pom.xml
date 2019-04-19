@@ -9,8 +9,8 @@
     <version>3.2</version>
 
     <name>ruoyi</name>
-	<url>http://www.ruoyi.vip</url>
-    <description>若依管理系统</description>
+	<url>http://www.sumslack.com</url>
+    <description>基于RuoYi的改进版</description>
     
     <properties>
 	    <ruoyi.version>3.2</ruoyi.version>
@@ -25,7 +25,6 @@
 		<swagger.version>2.7.0</swagger.version>
 		<pagehelper.boot.version>1.2.5</pagehelper.boot.version>
 		<oshi.version>3.9.1</oshi.version>
-		<mybatisplus.version>3.0.7.1</mybatisplus.version>
 		<hutool.version>4.1.19</hutool.version>
 	</properties>
 	
@@ -48,38 +47,24 @@
 		<module>ruoyi-quartz</module>
 		<module>ruoyi-generator</module>
         <module>ruoyi-common</module>
-        <module>sumslack-test</module>
     </modules>
     <packaging>pom</packaging>
 
 
 	<dependencies>
-
 		<!--Spring框架基本的核心工具-->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
 		</dependency>
-
-        <!-- mybatis-plus begin -->        
-	    <dependency>
-	        <groupId>com.baomidou</groupId>
-	        <artifactId>mybatis-plus-boot-starter</artifactId>
-	        <version>${mybatisplus.version}</version>
-	    </dependency>
 		<dependency>
-			<groupId>com.baomidou</groupId>
-			<artifactId>mybatis-plus</artifactId>
-			<version>${mybatisplus.version}</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>com.baomidou</groupId>
-			<artifactId>mybatis-plus-generator</artifactId>
-			<version>${mybatisplus.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.freemarker</groupId>
-			<artifactId>freemarker</artifactId>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
 		</dependency>
 		<!-- <dependency>
 		    <groupId>org.springframework.boot</groupId>
@@ -102,29 +87,16 @@
 		    <artifactId>guava</artifactId>
 		    <version>18.0</version>
 		</dependency>
-        <!-- Mysql驱动包 -->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-        </dependency>
-
-       <dependency>
-		    <groupId>javax.servlet</groupId>
-		    <artifactId>javax.servlet-api</artifactId>
-		</dependency>
-		
 		<!-- 日志工具类 -->
 		<dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
-
 		<dependency>
 			<groupId>cn.hutool</groupId>
 			<artifactId>hutool-all</artifactId>
 			<version>${hutool.version}</version>
 		</dependency>
-
 	</dependencies>
 
 	<build>
@@ -135,6 +107,7 @@
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
+                    <parameters>true</parameters>
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>

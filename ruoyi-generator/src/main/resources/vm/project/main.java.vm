@@ -3,12 +3,14 @@ package ${basePackage};
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.web.WebApplicationInitializer;
 
-@EnableCaching
+import com.ruoyi.system.domain.SysConfig;
 @SpringBootApplication(exclude = { DataSourceAutoConfiguration.class })
-public class MainApplication{
+@ComponentScan(basePackages= {"com.ruoyi"})
+public class MainApplication extends SpringBootServletInitializer implements WebApplicationInitializer{
     public static void main(String[] args) {
         SpringApplication.run(MainApplication.class, args);
     }
