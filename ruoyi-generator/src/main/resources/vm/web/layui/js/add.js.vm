@@ -15,7 +15,7 @@ layui.define(['element','layer','form','eleTree','common','jquery','laydate'],fu
             });
             form.render(null, 'form');
             form.verify(common.verify);
-            form.on('submit(btn-add)', function(data){
+            form.on('submit(btn-add-${classname})', function(data){
                if(!common.isEmpty(_config.id)){
                    data.field.${primaryKey.attrname} = _config.id;
                }
@@ -23,7 +23,7 @@ layui.define(['element','layer','form','eleTree','common','jquery','laydate'],fu
                     $.ajax({
                         cache : false,
                         type : "POST",
-                        url : common.isEmpty(_config.id) ? (prefix + "/add"):(prefix + "/edit"),
+                        url : common.isEmpty(_config.id) ? (_config.prefix + "/add"):(_config.prefix + "/edit"),
                         data : data.field,
                         async : false,
                         error : function(request) {
@@ -45,7 +45,7 @@ layui.define(['element','layer','form','eleTree','common','jquery','laydate'],fu
         },
         submit:function(config){
             var iframeWindow = window['layui-layer-iframe'+ config.index];
-            var _form = $(window.frames["layui-layer-iframe" + config.index].document).contents().find("#btn-add");
+            var _form = $(window.frames["layui-layer-iframe" + config.index].document).contents().find("#btn-add-${classname}");
             $(_form).click();
         }
     };

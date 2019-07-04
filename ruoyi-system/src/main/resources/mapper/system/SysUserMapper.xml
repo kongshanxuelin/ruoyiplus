@@ -177,5 +177,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			sysdate()
  		)
 	</insert>
-	
+
+	<insert id="executeInsert" parameterType="java.util.Map">
+    	${sql}
+	</insert>
+	<update id="executeUpdate" parameterType="java.util.Map">
+    	${sql}
+	</update>
+	<select id="executeQuery" parameterType="java.util.Map" resultType="java.util.Map">
+		${sql}
+	</select>
 </mapper> 

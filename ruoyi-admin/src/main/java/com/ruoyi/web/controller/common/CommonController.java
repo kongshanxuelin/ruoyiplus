@@ -1,9 +1,10 @@
 package com.ruoyi.web.controller.common;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import com.ruoyi.common.base.AjaxResult;
+import com.ruoyi.common.config.Global;
+import com.ruoyi.common.utils.file.FileUtils;
+import com.ruoyi.framework.config.ServerConfig;
+import com.ruoyi.framework.util.FileUploadUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +13,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import com.ruoyi.common.base.AjaxResult;
-import com.ruoyi.common.config.Global;
-import com.ruoyi.common.utils.file.FileUtils;
-import com.ruoyi.framework.config.ServerConfig;
-import com.ruoyi.framework.util.FileUploadUtils;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 通用请求处理
@@ -87,6 +90,24 @@ public class CommonController
         }
         catch (Exception e)
         {
+            return AjaxResult.error(e.getMessage());
+        }
+    }
+
+    /**
+     * layui layedit中插入图片文件
+     */
+    @PostMapping("/common/layedit/upload")
+    @ResponseBody
+    public AjaxResult layEditUploadFile(MultipartFile file) throws Exception {
+        try {
+            AjaxResult ajax = uploadFile(file);
+            Map<String, Object> data = new HashMap<>();
+            data.put("src", ajax.get("url"));
+            data.put("title", file.getOriginalFilename());
+            ajax.put("data", data);
+            return ajax;
+        } catch (Exception e) {
             return AjaxResult.error(e.getMessage());
         }
     }

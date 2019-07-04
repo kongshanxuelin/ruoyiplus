@@ -30,5 +30,11 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<typeAlias type="com.ruoyi.system.domain.SysUserPost" alias="SysUserPost"/>
 		<typeAlias type="com.ruoyi.system.domain.SysUserRole" alias="SysUserRole"/>
 
+		<!-- 自定义数据采集 -->
+		<typeAlias type="com.ruoyi.system.domain.DataTable" alias="DataTable"/>
+		<typeAlias type="com.ruoyi.system.domain.DataTableFields" alias="DataTableFields"/>
+		<typeAlias type="com.ruoyi.system.domain.DataTableFieldValues" alias="DataTableFieldValues"/>
+
+
 	</typeAliases>
 </configuration>

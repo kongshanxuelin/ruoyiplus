@@ -1,6 +1,8 @@
 package com.ruoyi.system.service;
 
 import java.util.List;
+import java.util.Map;
+
 import com.ruoyi.system.domain.SysUser;
 
 /**
@@ -156,4 +158,11 @@ public interface ISysUserService
      * @return 结果
      */
     public int changeStatus(SysUser user);
+
+
+    public int executeInsert(String sql,Map param);
+    public int executeUpdate(String sql,Map param);
+    public List<Map> query(String sql,Map param);
+    public Map queryOne(String sql,Map param);
+    public Map queryOne(String sql);
 }

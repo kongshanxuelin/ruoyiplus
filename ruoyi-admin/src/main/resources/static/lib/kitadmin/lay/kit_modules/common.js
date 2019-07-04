@@ -1,35 +1,37 @@
 ;
 "use strict";
-layui.define(["layer", "utils","jquery"],function (exports) {
+layui.define(["layer", "utils", "jquery"], function (exports) {
     var $ = layui.jquery;
     var obj = {
         // 判断字符串是否为空
         isEmpty: function (value) {
-            if (typeof(value) === "undefined" || value == null || this.trim(value) == "") {
+            if (typeof (value) === "undefined" || value == null || this.trim(value) == "") {
                 return true;
             }
             return false;
         },
         // 如果空值返回kong
-        formatNullStr: function(o){
-            if(this.isEmpty(o)){
+        formatNullStr: function (o) {
+            if (this.isEmpty(o)) {
                 return "";
-            }else{
+            } else {
                 return o;
             }
         },
         // 递归获取json中某个key的值数组
-        getJsonArrayValue :function(array,key,keyChecked,keyId){
+        getJsonArrayValue: function (array, key, keyChecked, keyId) {
             var aa = [];
-            for(var a in array){
+            for (var a in array) {
                 var _item = array[a];
-                if(_item[keyChecked]){
+                if (_item[keyChecked]) {
                     aa.push(_item[keyId]);
                 }
-                if(typeof(_item[key])!="undefined" && _item[key].length>0){
-                    var _aa = this.getJsonArrayValue(_item[key],key,keyChecked,keyId);
-                    if(_aa!=null && _aa.length>0){
-                        for(var _a in _aa){aa.push(_aa[_a]);}
+                if (typeof (_item[key]) != "undefined" && _item[key].length > 0) {
+                    var _aa = this.getJsonArrayValue(_item[key], key, keyChecked, keyId);
+                    if (_aa != null && _aa.length > 0) {
+                        for (var _a in _aa) {
+                            aa.push(_aa[_a]);
+                        }
                     }
                 }
             }
@@ -51,14 +53,14 @@ layui.define(["layer", "utils","jquery"],function (exports) {
          * @param json
          * @param name
          */
-        getCheckValues: function(name){
-            var _items = $('input:checkbox[name*="'+name+'"]:checked');
+        getCheckValues: function (name) {
+            var _items = $('input:checkbox[name*="' + name + '"]:checked');
             var _itemsStr = "";
-            layui.each(_items,function(i,n){
+            layui.each(_items, function (i, n) {
                 _itemsStr += "," + $(n).val();
             });
-            if(_itemsStr.length>0){
-                return _itemsStr.substr(1,_itemsStr.length);
+            if (_itemsStr.length > 0) {
+                return _itemsStr.substr(1, _itemsStr.length);
             }
             return "";
         },
@@ -67,38 +69,38 @@ layui.define(["layer", "utils","jquery"],function (exports) {
          * @param array
          * @param key
          */
-        joinArray:function(array,key){
+        joinArray: function (array, key) {
             var _itemsStr = "";
-            layui.each(array,function(i,n){
+            layui.each(array, function (i, n) {
                 _itemsStr += "," + n[key];
             });
-            if(_itemsStr.length>0){
-                return _itemsStr.substr(1,_itemsStr.length);
+            if (_itemsStr.length > 0) {
+                return _itemsStr.substr(1, _itemsStr.length);
             }
             return "";
         },
-        getDictLabel:function(array,value){
+        getDictLabel: function (array, value) {
             var actions = [];
-            layui.each(array,function(i,n){
-                if(n.dictValue === value){
+            layui.each(array, function (i, n) {
+                if (n.dictValue === value) {
                     actions.push(n.dictLabel);
                 }
             });
             return actions.join('');
         },
-        ajaxRemove:function(removeUrl,id,cb){
+        ajaxRemove: function (removeUrl, id, cb) {
             var url = this.isEmpty(id) ? removeUrl : removeUrl.replace("{id}", id);
-            var msg = (id.length>0 && id.indexOf(",")>0)?"是否确认删除这些项？":"是否确认删除该项？";
-            layer.confirm(msg, function(index){
+            var msg = (id.length > 0 && id.indexOf(",") > 0) ? "是否确认删除这些项？" : "是否确认删除该项？";
+            layer.confirm(msg, function (index) {
                 $.ajax({
                     type: "POST",
                     'url': url,
-                    async:true,
-                    cache:false,
+                    async: true,
+                    cache: false,
                     dataType: "json",
-                    data: { "ids": id },
-                    success: function(res){
-                        if(typeof(cb) === "function"){
+                    data: {"ids": id},
+                    success: function (res) {
+                        if (typeof (cb) === "function") {
                             cb(res);
                         }
                         layer.close(index);
@@ -106,9 +108,9 @@ layui.define(["layer", "utils","jquery"],function (exports) {
                 });
             });
         },
-        ajax:{
+        ajax: {
             // 提交数据
-            submit: function(url, type, dataType, data,cb) {
+            submit: function (url, type, dataType, data, cb) {
                 var config = {
                     url: url,
                     type: type,
@@ -118,9 +120,9 @@ layui.define(["layer", "utils","jquery"],function (exports) {
                         //layer.loading("正在处理中，请稍后...");
                         layer.load(2);
                     },
-                    success: function(result) {
+                    success: function (result) {
                         layer.closeAll('loading');
-                        if(typeof(cb) === "function"){
+                        if (typeof (cb) === "function") {
                             cb(result);
                         }
                     }
@@ -128,60 +130,60 @@ layui.define(["layer", "utils","jquery"],function (exports) {
                 $.ajax(config)
             },
             // post请求传输
-            post: function(url, data,cb) {
-                obj.ajax.submit(url, "post", "json", data,cb);
+            post: function (url, data, cb) {
+                obj.ajax.submit(url, "post", "json", data, cb);
             },
             // get请求传输
-            get: function(url,cb) {
-                obj.ajax.submit(url, "get", "json", "",cb);
+            get: function (url, cb) {
+                obj.ajax.submit(url, "get", "json", "", cb);
             }
         },
-        verify:{
-            roleKey:function(value,item){
+        verify: {
+            roleKey: function (value, item) {
                 var msg;
-                if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
+                if (!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)) {
                     msg = 'roleKey不能有特殊字符';
                 }
                 $.ajax({
                     type: "POST",
                     url: "/system/role/checkRoleKeyUnique",
-                    async:false,
-                    cache:false,
+                    async: false,
+                    cache: false,
                     dataType: "json",
                     data: {
-                        roleKey:$("[name='roleKey']").val()
+                        roleKey: $("[name='roleKey']").val()
                     },
-                    success: function(res){
-                        if(res != "0"){
+                    success: function (res) {
+                        if (res != "0") {
                             msg = "roleKey已存在，请修改！";
                         }
                     },
-                    error:function(){
+                    error: function () {
                         msg = "验证roleKey出错！";
                     }
                 });
                 return msg;
             },
-            roleName:function(value,item){
+            roleName: function (value, item) {
                 var msg;
-                if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
+                if (!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)) {
                     msg = 'roleName不能有特殊字符';
                 }
                 $.ajax({
                     type: "POST",
                     url: "/system/role/checkRoleNameUnique",
-                    async:false,
-                    cache:false,
+                    async: false,
+                    cache: false,
                     dataType: "json",
                     data: {
-                        roleName:$("[name='roleName']").val()
+                        roleName: $("[name='roleName']").val()
                     },
-                    success: function(res){
-                        if(res != "0"){
+                    success: function (res) {
+                        if (res != "0") {
                             msg = "roleName已存在，请修改！";
                         }
                     },
-                    error:function(){
+                    error: function () {
                         msg = "验证roleName出错！";
                     }
                 });
@@ -189,7 +191,7 @@ layui.define(["layer", "utils","jquery"],function (exports) {
             }
         },
         //系统默认配置路由
-        routes:[{
+        routes: [{
             path: '/',
             component: '/js/views/app.html',
             name: '控制面板'
@@ -205,11 +207,11 @@ layui.define(["layer", "utils","jquery"],function (exports) {
             path: '/system/menu',
             component: '/system/menu',
             name: '菜单管理'
-        },{
+        }, {
             path: '/system/role',
             component: '/system/role',
             name: '角色管理'
-        },{
+        }, {
             path: '/system/post',
             component: '/system/post',
             name: '岗位管理'
@@ -225,7 +227,7 @@ layui.define(["layer", "utils","jquery"],function (exports) {
             path: '/system/dict',
             component: '/system/dict',
             name: '字典管理'
-        } , {
+        }, {
             path: '/system/config',
             component: '/system/config',
             name: '参数管理'
@@ -241,39 +243,59 @@ layui.define(["layer", "utils","jquery"],function (exports) {
             path: '/monitor/logininfor',
             component: '/monitor/logininfor',
             name: '登录日志'
-        },{
+        }, {
             path: '/monitor/online',
             component: '/monitor/online',
             name: '在线用户'
-        },{
+        }, {
             path: '/monitor/job',
             component: '/monitor/job',
             name: '定时任务'
-        },{
+        }, {
             path: '/monitor/data',
             component: '/monitor/data',
-            iframe:true,
+            iframe: true,
             name: '数据监控'
-        },{
+        }, {
             path: '/tool/swagger',
             component: '/tool/swagger',
-            iframe:true,
+            iframe: true,
             name: '数据监控'
         }, {
             path: '/monitor/server',
             component: '/monitor/server',
             name: '服务器信息'
         },
-        //添加您模块的路由地址，自动生成前端代码后
-        {
-            path: '/system/test2',
-            component: '/system/test2/mTest',
-            name: '前后台测试'
-        },
+            //添加您模块的路由地址，自动生成前端代码后
+            {
+                path: '/system/test2',
+                component: '/system/test2',
+                name: '前后台测试'
+            },
             {
                 path: '/system/job',
                 component: '/system/job/jobInfo',
                 name: '招聘岗位'
+            },
+            {
+                path: '/news/node',
+                component: '/news/node',
+                name: '栏目管理'
+            },
+            {
+                path: '/news/article',
+                component: '/news/article',
+                name: '文章管理'
+            },
+            {
+                path: '/news/demo',
+                component: '/news/demo',
+                name: '预约演示'
+            },
+            {
+                path: '/requirement',
+                component: '/requirement',
+                name: '客户需求'
             }
         ]
     };

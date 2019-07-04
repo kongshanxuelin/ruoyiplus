@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.DataTableMapper">
+
+    <resultMap type="DataTable" id="DataTableResult">
+        <id     property="id"           column="id"      />
+        <result property="tableName"    column="table_name"      />
+        <result property="tableLabel"    column="table_label"   />
+        <result property="modifyTime"     column="modify_time"    />
+        <result property="sys"        column="sys"        />
+    </resultMap>
+    <resultMap type="DataTableFields" id="DataTableFields">
+        <id     property="id"           column="id"      />
+        <result property="objId"        column="obj_id"      />
+        <result property="objField"     column="obj_field"   />
+        <result property="objLabel"     column="obj_label"    />
+        <result property="objDefault"        column="obj_default"        />
+        <result property="objType"        column="obj_type"        />
+        <result property="modifyTime"     column="modify_time"    />
+    </resultMap>
+    <resultMap type="DataTableFieldValues"   id="DataTableFieldValues">
+        <id     property="id"                column="id"      />
+        <result property="objId"             column="obj_id"      />
+        <result property="fieldId"           column="field_id"   />
+        <result property="fieldValue"        column="field_value"    />
+        <result property="fieldValueNum"     column="field_value_num"    />
+        <result property="fieldValueInt"     column="field_value_int"    />
+        <result property="fieldValueDate"    column="field_value_date"    />
+        <result property="modifyTime"        column="modify_time"    />
+    </resultMap>
+    <sql id="selectDataTableVo">
+        select  id,table_name,table_label,modify_time,sys
+		from data_table
+    </sql>
+
+    <select id="selectDataTableList" parameterType="DataTable" resultMap="DataTableResult">
+        <include refid="selectDataTableVo"/>
+        where 1=1
+        <if test="tableName != null and tableName != ''">
+            AND table_name like concat('%', #{tableName}, '%')
+        </if>
+        <if test="tableLabel != null and tableLabel != ''">
+            AND table_label like concat('%', #{tableLabel}, '%')
+        </if>
+    </select>
+
+    <select id="selectDataTableById" parameterType="Long" resultMap="DataTableResult">
+        <include refid="selectDataTableVo"/>
+        where id= #{id}
+    </select>
+
+    <delete id="deleteDataTableByIds" parameterType="Long">
+ 		delete from data_table where id in
+        <foreach collection="array" item="tableId" open="(" separator="," close=")">
+            #{tableId}
+        </foreach>
+ 	</delete>
+
+    <update id="updateDataTable" parameterType="DataTable">
+        update data_table
+        <set>
+            <if test="tableName != null and tableName != ''">table_name = #{tableName},</if>
+            <if test="tableLable != null and tableLable != ''">table_label = #{tableLable},</if>
+            <if test="sys != null and sys != ''">sys = #{sys},</if>
+            modify_time = sysdate()
+        </set>
+        where id = #{id}
+    </update>
+
+    <insert id="insertDataTable" parameterType="DataTable" useGeneratedKeys="true" keyProperty="id">
+        insert into data_table(
+        <if test="id != null and id != 0">id,</if>
+        <if test="tableName != null and tableName != ''">table_name,</if>
+        <if test="tableLabel != null and tableLabel != ''">table_label,</if>
+        <if test="sys != null and sys != ''">sys,</if>
+        modify_time
+        )values(
+        <if test="id != null and id != 0">#{id},</if>
+        <if test="tableName != null and tableName != ''">#{tableName},</if>
+        <if test="tableLabel != null and tableLabel != ''">#{tableLabel},</if>
+        <if test="sys != null and sys != ''">#{sys},</if>
+        sysdate()
+        )
+    </insert>
+
+    <insert id="insertDataTableFields" parameterType="DataTableFields" useGeneratedKeys="true" keyProperty="id">
+        insert into data_fields(
+        <if test="id != null and id != 0">id,</if>
+        <if test="objId != null and objId != ''">obj_id,</if>
+        <if test="objField != null and objField != ''">obj_field,</if>
+        <if test="objLabel != null and objLabel != ''">obj_label,</if>
+        <if test="objDefault != null and objDefault != ''">obj_default,</if>
+        <if test="objType != null and objType != ''">obj_type,</if>
+        modify_time
+        )values(
+        <if test="id != null and id != 0">#{id},</if>
+        <if test="objId != null and objId != ''">#{objId},</if>
+        <if test="objField != null and objField != ''">#{objField},</if>
+        <if test="objLabel != null and objLabel != ''">#{objLabel},</if>
+        <if test="objDefault != null and objDefault != ''">#{objDefault},</if>
+        <if test="objType != null and objType != ''">#{objType},</if>
+        sysdate()
+        )
+    </insert>
+
+    <insert id="insertDataTableFieldValues" parameterType="DataTableFieldValues" useGeneratedKeys="true" keyProperty="id">
+        insert into data_field_values(
+        <if test="id != null and id != 0">id,</if>
+        <if test="objId != null and objId != ''">obj_id,</if>
+        <if test="fieldId != null and fieldId != ''">field_id,</if>
+        <if test="fieldValue != null and fieldValue != ''">field_value,</if>
+        <if test="fieldValueNum != null and fieldValueNum != ''">field_value_num,</if>
+        <if test="fieldValueInt != null and fieldValueInt != ''">field_value_int,</if>
+        <if test="fieldValueDate != null and fieldValueDate != ''">field_value_date,</if>
+        modify_time
+        )values(
+        <if test="id != null and id != 0">#{id},</if>
+        <if test="objId != null and objId != ''">#{objId},</if>
+        <if test="fieldId != null and fieldId != ''">#{fieldId},</if>
+        <if test="fieldValue != null and fieldValue != ''">#{fieldValue},</if>
+        <if test="fieldValueNum != null and fieldValueNum != ''">#{fieldValueNum},</if>
+        <if test="fieldValueInt != null and fieldValueInt != ''">#{fieldValueInt},</if>
+        <if test="fieldValueDate != null and fieldValueDate != ''">#{fieldValueDate},</if>
+        sysdate()
+        )
+    </insert>
+</mapper>

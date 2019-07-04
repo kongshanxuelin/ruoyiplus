@@ -9,7 +9,7 @@
                     <div class="layui-card-body">
                         <div class="layui-row">
                             <div class="layui-col-md12">
-                                <form class="layui-form" lay-filter="form-${module}-filter}">
+                                <form id="${classname}-search-form" class="layui-form" lay-filter="form-${module}-filter">
                                     <div class="layui-row layui-col-space10 layui-form-item">
                                         #set( $page = 'list' )
                                         #foreach($column in $columns)
@@ -28,13 +28,13 @@
                 </div>
                 <div class="layui-card">
                     <div class="layui-card-body">
-                        <table id="table_${module}" lay-filter="table_${module}">
+                        <table id="table_${module}_${classname}" lay-filter="table_${module}_${classname}">
                         </table>
                         <script type="text/html" id="col_operation">
                             <a shiro:hasPermission="system:${module}:edit" class="layui-btn layui-btn-xs" href="javascript:;" lay-event="edit"><i class="fa fa-edit"></i>编辑</a>
                             <a shiro:hasPermission="system:${module}:remove" class="layui-btn layui-btn-xs" href="javascript:;" lay-event="del"><i class="fa fa-remove"></i>删除</a>
                         </script>
-                        <script type="text/html" id="table_${module}_toolbar">
+                        <script type="text/html" id="table_${module}_${classname}_toolbar">
                             <div class="layui-btn-container" shiro:hasPermission="system:${module}:add">
                                 <button  class="layui-btn layui-btn-sm" lay-event="toolbar-${module}-add" shiro:hasPermission="system:${module}:add">新增</button>
                                 <button  class="layui-btn layui-btn-sm" lay-event="toolbar-${module}-remove" shiro:hasPermission="system:${module}:remove">批量删除</button>

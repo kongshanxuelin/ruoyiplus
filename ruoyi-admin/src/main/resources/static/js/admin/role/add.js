@@ -19,7 +19,7 @@ layui.define(['element','layer','form','eleTree','common','jquery'],function(exp
                 elem: '#menuTrees',
                 showCheckbox: true,
                 url: treeUrl,
-                defaultCheckedKeys:[113,115],
+                //  defaultCheckedKeys:[113,115],
                 request: {
                     name: "name",
                     key: "id",
@@ -38,7 +38,7 @@ layui.define(['element','layer','form','eleTree','common','jquery'],function(exp
                     menuTree.setChecked(ss);
                     console.log("tree checked:",ss)
                 },
-                defaultExpandAll: false,
+                defaultExpandAll: true,
                 expandOnClickNode: false,
                 highlightCurrent: true
             });

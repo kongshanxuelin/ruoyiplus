@@ -1,8 +1,16 @@
 package com.ruoyi.framework.config;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import javax.servlet.Filter;
+import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
+import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.framework.shiro.realm.UserRealm;
+import com.ruoyi.framework.shiro.session.OnlineSessionDAO;
+import com.ruoyi.framework.shiro.session.OnlineSessionFactory;
+import com.ruoyi.framework.shiro.web.filter.LogoutFilter;
+import com.ruoyi.framework.shiro.web.filter.captcha.CaptchaValidateFilter;
+import com.ruoyi.framework.shiro.web.filter.online.OnlineSessionFilter;
+import com.ruoyi.framework.shiro.web.filter.sync.SyncOnlineSessionFilter;
+import com.ruoyi.framework.shiro.web.session.OnlineWebSessionManager;
+import com.ruoyi.framework.shiro.web.session.SpringSessionValidationScheduler;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.SecurityManager;
@@ -15,17 +23,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.framework.shiro.realm.UserRealm;
-import com.ruoyi.framework.shiro.session.OnlineSessionDAO;
-import com.ruoyi.framework.shiro.session.OnlineSessionFactory;
-import com.ruoyi.framework.shiro.web.filter.LogoutFilter;
-import com.ruoyi.framework.shiro.web.filter.captcha.CaptchaValidateFilter;
-import com.ruoyi.framework.shiro.web.filter.online.OnlineSessionFilter;
-import com.ruoyi.framework.shiro.web.filter.sync.SyncOnlineSessionFilter;
-import com.ruoyi.framework.shiro.web.session.OnlineWebSessionManager;
-import com.ruoyi.framework.shiro.web.session.SpringSessionValidationScheduler;
-import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
+
+import javax.servlet.Filter;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * 权限配置加载
@@ -252,6 +253,7 @@ public class ShiroConfig
         //职位不做认证
         filterChainDefinitionMap.put("/system/job/**", "anon");
         filterChainDefinitionMap.put("/app/**", "anon");
+        filterChainDefinitionMap.put("/profile/**", "anon");
         // 退出 logout地址，shiro去清除session
         filterChainDefinitionMap.put("/logout", "logout");
         // 不需要拦截的访问

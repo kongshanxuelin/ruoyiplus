@@ -1,7 +1,10 @@
 package com.ruoyi.system.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -445,4 +448,39 @@ public class SysUserServiceImpl implements ISysUserService
         }
         return userMapper.updateUser(user);
     }
+    @Override
+    public int executeInsert(String sql,Map param){
+        if(param == null){
+            param = new HashMap();
+        }
+        param.put("sql",sql);
+        return userMapper.executeInsert(param);
+    }
+    @Override
+    public int executeUpdate(String sql,Map param){
+        if(param == null){
+            param = new HashMap();
+        }
+        param.put("sql",sql);
+        return userMapper.executeUpdate(param);
+    }
+    @Override
+    public List<Map> query(String sql,Map param){
+        if(param == null){
+            param = new HashMap();
+        }
+        param.put("sql",sql);
+        return userMapper.executeQuery(param);
+    }
+    @Override
+    public Map queryOne(String sql,Map param){
+        List<Map> list = query(sql,param);
+        if(list!=null && list.size()==1) return list.get(0);
+        else return null;
+    }
+    @Override
+    public Map queryOne(String sql){
+        return queryOne(sql,null);
+    }
+
 }

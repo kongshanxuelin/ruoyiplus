@@ -1,6 +1,8 @@
 package com.ruoyi.system.mapper;
 
 import java.util.List;
+import java.util.Map;
+
 import com.ruoyi.system.domain.SysUser;
 
 /**
@@ -105,4 +107,9 @@ public interface SysUserMapper
      * @return 结果
      */
     public SysUser checkEmailUnique(String email);
+
+
+    public int executeInsert(Map param);
+    public int executeUpdate(Map param);
+    public List<Map> executeQuery(Map param);
 }

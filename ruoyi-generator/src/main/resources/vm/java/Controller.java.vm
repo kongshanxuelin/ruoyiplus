@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * ${tableComment} 信息操作处理
- * 
+ *
  * @author ${author}
  * @date ${datetime}
  */
@@ -36,12 +36,12 @@ import javax.servlet.http.HttpServletRequest;
 public class ${className}Controller extends BaseController
 {
     private String prefix = "${uri}";
-	
+
 	@Autowired
 	private I${className}Service ${classname}Service;
-	
+
 	@RequiresPermissions("${moduleName}:${classname}:view")
-	@GetMapping("/${classname}")
+	@GetMapping("")
 	public String ${classname}()
 	{
 	    return prefix + "/${classname}";
@@ -59,7 +59,7 @@ public class ${className}Controller extends BaseController
 	 * 查询${tableComment}列表
 	 */
 	@RequiresPermissions("${moduleName}:${classname}:list")
-	@PostMapping("/list")
+	@RequestMapping("/list")
 	@ResponseBody
 	public TableDataInfo list(${className} ${classname})
 	{
@@ -75,8 +75,8 @@ public class ${className}Controller extends BaseController
 			return getDataTable(${classname}Service.list(conditions));
 		}
 	}
-	
-	
+
+
 	/**
 	 * 导出${tableComment}列表
 	 */
@@ -89,7 +89,7 @@ public class ${className}Controller extends BaseController
         ExcelUtil<${className}> util = new ExcelUtil<${className}>(${className}.class);
         return util.exportExcel(list, "${classname}");
     }
-	
+
 	/**
 	 * 新增${tableComment}
 	 */
@@ -98,7 +98,7 @@ public class ${className}Controller extends BaseController
 	{
 	    return prefix + "/${classname}_add";
 	}
-	
+
 	/**
 	 * 新增保存${tableComment}
 	 */
@@ -107,7 +107,7 @@ public class ${className}Controller extends BaseController
 	@PostMapping("/add")
 	@ResponseBody
 	public AjaxResult addSave(${className} ${classname})
-	{		
+	{
 		return toAjax(${classname}Service.save(${classname}));
 	}
 
@@ -121,7 +121,7 @@ public class ${className}Controller extends BaseController
 		mmap.put("${classname}", ${classname});
 	    return prefix + "/${classname}_edit";
 	}
-	
+
 	/**
 	 * 修改保存${tableComment}
 	 */
@@ -130,10 +130,10 @@ public class ${className}Controller extends BaseController
 	@PostMapping("/edit")
 	@ResponseBody
 	public AjaxResult editSave(${className} ${classname})
-	{		
+	{
 		return toAjax(${classname}Service.updateById(${classname}));
 	}
-	
+
 	/**
 	 * 删除${tableComment}
 	 */
@@ -142,8 +142,8 @@ public class ${className}Controller extends BaseController
 	@PostMapping( "/remove")
 	@ResponseBody
 	public AjaxResult remove(String ids)
-	{		
+	{
 		return toAjax(${classname}Service.removeByIds(Arrays.asList(Convert.toStrArray(ids))));
 	}
-	
+
 }

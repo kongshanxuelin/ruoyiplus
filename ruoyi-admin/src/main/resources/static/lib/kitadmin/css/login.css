@@ -11,7 +11,7 @@
     right: 0;
     bottom: 0;
     background-size: cover;
-    background-image: url(/lib/kitadmin/images/bg.jpg)
+    background-image: url(../images/bg.jpg)
 }
 
 .kit-login-wapper {

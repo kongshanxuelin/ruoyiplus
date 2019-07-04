@@ -33,14 +33,15 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label">工程目录：</label>
                             <div class="layui-input-block">
-                                <input type="text" class="layui-input" name="dir" th:value="${dir + '\sumslack-test'}"/>
+                                <!--<input type="text" class="layui-input" name="dir" th:value="${dir + '\sumslack-test'}"/>-->
+                                <input type="text" class="layui-input" name="dir" value="X:\workspace2019\idea\ss-news"/>
                             </div>
                         </div>
                         <div class="layui-row layui-col-space10 layui-form-item">
                             <div class="layui-col-lg4">
                                 <label class="layui-form-label">模块名：</label>
                                 <div class="layui-input-block">
-                                    <input type="text" name="module" lay-verify="required" placeholder="" value="test"
+                                    <input type="text" name="module" lay-verify="required" placeholder="" value="news"
                                            autocomplete="off" class="layui-input">
                                 </div>
                             </div>
@@ -48,7 +49,7 @@
                                 <label class="layui-form-label">UrlBase：</label>
                                 <div class="layui-input-block">
                                     <input type="text" name="uri" lay-verify="required" placeholder=""
-                                           autocomplete="off" value="system/test" class="layui-input">
+                                           autocomplete="off" value="news/node" class="layui-input">
                                 </div>
                             </div>
                         </div>
@@ -68,7 +69,7 @@
                             <div class="layui-col-lg4" id="c_package" style="display:none">
                                 <label class="layui-form-label">Package：</label>
                                 <div class="layui-input-block">
-                                    <input type="text" name="package" placeholder="" value="com.ruoyi" autocomplete="off" class="layui-input" />
+                                    <input type="text" name="package" placeholder="" value="com.sumscope.news" autocomplete="off" class="layui-input"/>
                                 </div>
                             </div>
                         </div>
@@ -85,6 +86,11 @@
                                             <select name="table" lay-verify="required" lay-filter="tableList">
                                                 <option value="">请选择生成的表</option>
                                             </select>
+                                        </div>
+                                        <label class="layui-form-label">前缀：</label>
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="prefix" placeholder="想要去除的表名前缀"
+                                                   autocomplete="off" value="news_" class="layui-input"/>
                                         </div>
                                     </div>
                                     <table class="layui-table" lay-even lay-size="lg" lay-skin="line" id="tableColumns"
@@ -242,7 +248,7 @@
             selectM = layui.selectM,
             table = layui.table;
         var pkColumn = {};
-
+        form.render();
         //Tab变化侦听
         element.on('tab(genType)', function () {
             if (this.getAttribute('lay-id').indexOf("sql") >= 0) {

@@ -30,7 +30,7 @@
 				#end
 			#end
 		#end
-		<button class="layui-btn" id="btn-add" style="display:none"  lay-submit lay-filter="btn-add">创建</button>
+		<button class="layui-btn" id="btn-add-${classname}" style="display:none"  lay-submit lay-filter="btn-add-${classname}">创建</button>
 	</form>
 </div>
 <script src="../static/lib/kitadmin/polyfill.min.js" th:src="@{/lib/kitadmin/polyfill.min.js}"></script>

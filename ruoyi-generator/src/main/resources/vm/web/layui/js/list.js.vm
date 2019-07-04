@@ -5,12 +5,12 @@ layui.define(['jquery','table','layer','form','laydate','common'], function(expo
         common = layui.common,
         laydate = layui.laydate,
         table = layui.table;
-    var table_${module} = null;
+    var table_${module}_${classname} = null;
     //页面事件列表
     var active = {
         reload: function(){
             //执行重载
-            table.reload('table_${module}', {
+            table.reload('table_${module}_${classname}', {
                 page: {
                     curr: 1
                 }
@@ -25,7 +25,7 @@ layui.define(['jquery','table','layer','form','laydate','common'], function(expo
             });
         },
         remove: function(ids){
-            common.ajaxRemove(prefix + "/remove",ids,function(res){
+            common.ajaxRemove(_config.prefix + "/remove",ids,function(res){
                 active['reload'].call(this);
             });
         }
@@ -41,13 +41,13 @@ layui.define(['jquery','table','layer','form','laydate','common'], function(expo
             this.initForm();
         },
         initTable:function(){
-            table_${module} = table.render({
-                elem: '#table_${module}',
+            table_${module}_${classname} = table.render({
+                elem: '#table_${module}_${classname}',
                 method: 'POST',
-                url: prefix + "/list", //数据接口
-                toolbar: '#table_${module}_toolbar',
+                url: _config.prefix + "/list", //数据接口
+                toolbar: '#table_${module}_${classname}_toolbar',
                 done: function() {
-                    $('#table_${module}').next().css('height', 'auto');
+                    $('#table_${module}_${classname}').next().css('height', 'auto');
                 },
                 limit: 20,
                 height: 680,
@@ -78,10 +78,10 @@ layui.define(['jquery','table','layer','form','laydate','common'], function(expo
                     }])
             });
             //表格工具栏按钮事件
-            table.on('toolbar(table_${module})', function(obj){
+            table.on('toolbar(table_${module}_${classname})', function(obj){
                 switch(obj.event){
                     case 'toolbar-${module}-remove':
-                        var checks = table.checkStatus('table_${module}');
+                        var checks = table.checkStatus('table_${module}_${classname}');
                         var ids = common.joinArray(checks.data,"${primaryKey.attrname}");
                         active['remove'].call(this,ids);
                         break;
@@ -93,7 +93,7 @@ layui.define(['jquery','table','layer','form','laydate','common'], function(expo
                             fixed: false,
                             maxmin: true,
                             area: ['600px', '450px'],
-                            content: prefix + '/add',
+                            content: _config.prefix + '/add',
                             btn:["创建","取消"],
                             yes:function(index,layero){
                                 layui.config({
@@ -113,7 +113,7 @@ layui.define(['jquery','table','layer','form','laydate','common'], function(expo
                 }
             });
             //表格事件
-            table.on('tool(table_${module})', function(obj){
+            table.on('tool(table_${module}_${classname})', function(obj){
                 switch(obj.event){
                     case 'del':
                         active['remove'].call(this,obj.data.${primaryKey.attrname});
@@ -126,7 +126,7 @@ layui.define(['jquery','table','layer','form','laydate','common'], function(expo
                             fixed: false,
                             maxmin: true,
                             area: ['800px', '600px'],
-                            content: prefix + '/edit/'+obj.data.${primaryKey.attrname},
+                            content: _config.prefix + '/edit/'+obj.data.${primaryKey.attrname},
                             btn:["保存","取消"],
                             yes:function(index,layero){
                                 layui.config({
@@ -144,7 +144,7 @@ layui.define(['jquery','table','layer','form','laydate','common'], function(expo
             });
         },
         initForm:function(){
-            $('form .layui-btn').on('click', function(){
+            $('#${classname}-search-form .layui-btn').on('click', function(){
                 var type = $(this).data('type');
                 active[type] ? active[type].call(this) : '';
                 return false;

@@ -26,6 +26,7 @@ public class EleTreeWrapper {
             List<Map> childList = list.stream().filter(item -> Convert.toStr(item.get(keyPid)).equals(Convert.toStr(child.get(keyId)))).collect(Collectors.toList());
             if(childList!=null && childList.size()>0){
                 child.put("isLeaf",false);
+                child.put("checked", false);
                 child.put("children",childList);
             }else{
                 child.put("isLeaf",true);
